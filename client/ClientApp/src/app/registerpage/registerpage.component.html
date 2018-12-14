@@ -1,0 +1,38 @@
+<body>
+  <div class="registerpage">
+
+    <div class="register">
+        <div class="userName">
+          <label class="name-label">Name</label>
+          <input type="text" name="userName" value required="required">
+        </div>
+        <div class="nickName">
+          <label class="nickname-label">NickName</label>
+          <input type="text" name="nickName" value required="required">
+        </div>
+        <div class="email">
+          <label class="email-label">Email</label>
+          <input type="text" name="email" value required="required">
+        </div>
+        <div class="password">
+          <label class="password-label">Password</label>
+          <input name="password" required="required" type="password">
+        </div>
+        <div class="confPassword">
+          <label class="confpassword-label">Confirm Password</label>
+          <input name="confPassword" required="required" type="password">
+        </div>
+        <p class="errorMesg" (ngModel)="errorMsg">
+          {{ errorMsg }}
+        </p>
+        <p class="required-fields">
+          *Required fields
+        </p>
+        
+        <button class="sign-up-button" title="Sign up">
+          <span class="label">Sign up</span>
+          <span class="spinner"></span>
+        </button>
+    </div>
+  </div>
+</body>

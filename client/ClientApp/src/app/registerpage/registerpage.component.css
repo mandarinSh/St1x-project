@@ -1,5 +1,4 @@
-
-.loginpage {
+.registerpage {
     background: rgb(235, 235, 235);
     box-shadow: 0px 0px 40px 0px
     rgba(0,0,0,0.1);
@@ -18,18 +17,35 @@
     right: 0;
 }
 
-.login {
+.register {
     position: relative;
     float: left;
-    top: 30%;
-    left: 50%;
-    transform: translateY(-50%);
-    transform: translateX(-50%);
+    top: 5%;
+    left: 10%;
+    transform: translateY(-10%);
+    transform: translateX(-10%);
 }
 
-.log-in-button, .sign-up-button { 
+.name-label, .nickname-label, .email-label, .password-label, .confpassword-label {
+    color: rgb(41, 79, 87);
+}
+
+input {
+    width: 81%;
+    margin: 2px 2px;
+    padding: 8px;
+    color: #212121;
+    text-decoration: none;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 10px;
+}
+
+.sign-up-button { 
     position: relative;
-    left: 20%;
+    float: right;
+    left: 50%;
     width: 50%;
     margin: 2px 2px;
     margin-top: 5px;
@@ -42,22 +58,10 @@
     border-radius: 10px;
 }
 
-input {
-    width: 91%;
-    margin: 2px 2px;
-    padding: 8px;
-    color: #212121;
-    text-decoration: none;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.7);
-    border: none;
-    border-radius: 10px;
-}
-
-.login-label, .password-label {
-    color: rgb(41, 79, 87);
-}
-
 .errorMesg {
     color: rgb(158, 10, 10);
+}
+
+.required-fields {
+    color: #5DAFC1;
 }
