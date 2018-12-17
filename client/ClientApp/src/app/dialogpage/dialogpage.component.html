@@ -1,22 +1,51 @@
 <div class="dialogpage">
 
-  <div class="row">
+  <div class="row common">
 
     <div class="column left">
-      <div class="upcolumn upleft">
-        <button class="menuButton">
-          Strix
-        </button>
-      </div>
-      <div class="upcollumn uproght">
-        <button class="find">
+
+      <!-- navigation bar -->
+      <div class="row upleft">
+        <div class="column left-left-column">
+          <button class="menuButton">
+            Strix
+          </button>
+        </div>
+        <div class="column left-right-column">
+          <button class="findButton">
             &#8981;
-        </button>
+          </button>
+        </div>
       </div>
+
+      <!-- list of dialogs -->
+
     </div>
 
     <div class="column right">
 
+      <!-- navigation bar -->
+      <div class="row upright">
+          <div class="column right-left-column">
+            <button class="backButton" (ngModel)="currentInterlocutor">
+              ❮ {{ currentInterlocutor.name }}
+            </button>
+          </div>
+          <!-- <div class="column right-middle-column">
+            <button class="notification">
+              🔔
+            </button>
+          </div> -->
+          <div class="column right-right-column">
+            <button class="propertiesButton">
+              ⁝
+            </button>
+          </div>
+      </div>
+
+      <!-- current dialog -->
+
     </div>
+
   </div>
 </div>
