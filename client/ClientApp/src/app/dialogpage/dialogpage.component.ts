@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Dialog } from '../dialog';
 import { Message } from '../message';
+import { ChatService } from '../chat.service';
 
 
 @Component({
@@ -15,7 +16,9 @@ export class DialogpageComponent implements OnInit {
   messages: Message[] = [];
   isInDialog = false;
 
-  constructor() { }
+  newMsg = '';
+
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
     this.getDialogs();
@@ -24,6 +27,10 @@ export class DialogpageComponent implements OnInit {
   getDialogs() {
     this.dialogs.push(new Dialog('Ann', 0));
     this.messages.push(new Message('hey'));
+  }
+
+  sendMessage(newMsg: string) {
+    this.chatService.send(newMsg);
   }
 
 }

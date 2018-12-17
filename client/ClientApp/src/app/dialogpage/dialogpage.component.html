@@ -77,8 +77,19 @@
                   </div>              
               </li>
             </ul>
+            <div class="row inputBox">
+              <div class="column text-column">
+                <!-- <p #typeMsg hidden=true></p> -->
+                <input #newMsg class="textField" type="text" placeholder="Type here..." />
+              </div>
+              <div class="column button-column">
+                <button class="sendButton" (click)="sendMessage(newMsg.textContent)">&#9993;</button>
+              </div>
+            </div>
           </div>
-          </div>
+      </div>
+
+
 
       <!-- end curren dialog -->
 
