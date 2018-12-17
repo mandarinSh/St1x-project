@@ -23,6 +23,8 @@ defmodule StixServerWeb.Router do
     pipe_through :api
 
     get "/users", PageController, :index
+    get "/users/:id", UserController, :get_user
+
     post "/sign_up", UserController, :sign_up
 
     post "/sign_in", UserController, :sign_in
