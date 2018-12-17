@@ -17,3 +17,23 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+
+
+## API
+
+'DOMAIN_NAME' will means your ip-adress or domain name.
+
+Users have next felds: ':id', ':email', ':nickname', ':first_name', ':last_name'
+
+### /api scope:
+  * 'GET' "/users":
+    returns all users.
+
+  * 'GET' "/users/:id":
+    returns user with id = :id if exists.
+
+  * 'POST' "/sign_up" with parameters of user above. Required :email and :password.
+    reutrns user which created, also puts response status ':created' if everything alright. Else puts ':bad_request' status.
+    
+  * 'POST' "/sign_in" with parameters of user above. Requeared only email and password.
+    puts response status 200 and user if logined

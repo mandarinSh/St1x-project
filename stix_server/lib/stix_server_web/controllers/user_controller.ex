@@ -20,14 +20,16 @@ defmodule StixServerWeb.UserController do
 
     query = from u in User, where: u.email == ^email and u.password == ^password, select: u
     results = StixServer.Repo.one(query)
+
     case results do
       %User{} ->
-        json(conn |> put_status(200), %{loggined: true,
-            user_body: results})
+        json(conn |> put_status(200), %{loggined: true, user_body: results})
+
       _ ->
-        json(conn |> put_status(:bad_request),
-          %{loggined: false,
-            errors: ["invalid email or password", "user not exists"]})
+        json(
+          conn |> put_status(:bad_request),
+          %{loggined: false, errors: ["invalid email or password", "user not exists"]}
+        )
     end
   end
 
@@ -40,6 +42,15 @@ defmodule StixServerWeb.UserController do
 
       {:error, _changeset} ->
         json(conn |> put_status(:bad_request), %{errors: ["unable to send message"]})
+    end
+  end
+
+  def get_user(conn, %{"id" => id}) do
+    user = StixServer.Repo.get(StixServer.Schemas.User, id)
+
+    case user do
+      nil -> json(conn |> put_status(404), %{errors: ["user not found"]})
+      _ -> json(conn, user)
     end
   end
 end

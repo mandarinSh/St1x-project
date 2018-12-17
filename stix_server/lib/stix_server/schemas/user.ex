@@ -2,7 +2,7 @@ defmodule StixServer.Schemas.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:id, :email, :nickname]}
+  @derive {Jason.Encoder, only: [:id, :email, :nickname, :first_name, :last_name]}
   schema "users" do
     field :birthday, :date
     field :email, :string
