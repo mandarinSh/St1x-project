@@ -7,6 +7,9 @@ import { LoginpageComponent } from './loginpage/loginpage.component';
 import { RegisterpageComponent } from './registerpage/registerpage.component';
 import { DialogpageComponent } from './dialogpage/dialogpage.component';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ChatService } from './chat.service';
+import { WebconnectionService } from './webconnection.service';
 
 @NgModule({
   declarations: [
@@ -18,9 +21,11 @@ import { CommonModule } from '@angular/common';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ChatService,
+    WebconnectionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

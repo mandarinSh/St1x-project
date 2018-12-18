@@ -1,8 +1,9 @@
 export class Dialog {
-    userName: string;
-    id: number;
 
-    // public static uniqueIdentifier = 0;
+    id: number;
+    userName: string;
+    userId: number;
+
 
     constructor(userName: string, id: number) {
         this.userName = userName;
