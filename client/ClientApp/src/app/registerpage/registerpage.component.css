@@ -1,0 +1,67 @@
+.registerpage {
+    background: rgb(235, 235, 235);
+    box-shadow: 0px 0px 40px 0px
+    rgba(0,0,0,0.1);
+    margin: 15%;
+    padding: 3%;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+    position: absolute;
+    height: 65%;
+    width: 50%;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.register {
+    position: relative;
+    float: left;
+    top: 5%;
+    left: 10%;
+    transform: translateY(-10%);
+    transform: translateX(-10%);
+}
+
+.name-label, .nickname-label, .email-label, .password-label, .confpassword-label {
+    color: rgb(41, 79, 87);
+}
+
+input {
+    width: 81%;
+    margin: 2px 2px;
+    padding: 8px;
+    color: #212121;
+    text-decoration: none;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 10px;
+}
+
+.sign-up-button { 
+    position: relative;
+    float: right;
+    left: 50%;
+    width: 50%;
+    margin: 2px 2px;
+    margin-top: 5px;
+    padding: 8px;
+    color: rgb(41, 79, 87);
+    text-decoration: none;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid #386A75;
+    border-radius: 10px;
+}
+
+.errorMesg {
+    color: rgb(158, 10, 10);
+}
+
+.required-fields {
+    color: #5DAFC1;
+}
