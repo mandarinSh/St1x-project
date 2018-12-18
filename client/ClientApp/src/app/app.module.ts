@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +11,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatService } from './chat.service';
 import { WebconnectionService } from './webconnection.service';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:4300', options: {} };
 
 @NgModule({
   declarations: [
@@ -20,9 +24,11 @@ import { WebconnectionService } from './webconnection.service';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [ChatService,
     WebconnectionService],
