@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-loginpage',
@@ -11,7 +12,7 @@ export class LoginpageComponent implements OnInit {
   email = '';
   password = '';
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -20,11 +21,11 @@ export class LoginpageComponent implements OnInit {
     this.email = email;
     this.password = password;
     // TODO: login and password validation
-    // this.router.navigate(['/dialogs']);
+    this.router.navigate(['/dialogs']);
   }
 
   onSignIn() {
-    // this.router.navigate(['/registerpage']);
+    this.router.navigate(['/registerpage']);
   }
 
 }

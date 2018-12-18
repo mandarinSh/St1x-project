@@ -9,11 +9,11 @@ import { RegisterpageComponent } from './registerpage/registerpage.component';
 import { DialogpageComponent } from './dialogpage/dialogpage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ChatService } from './chat.service';
+// import { ChatService } from './chat.service';
 import { WebconnectionService } from './webconnection.service';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
-const config: SocketIoConfig = { url: 'http://localhost:4300', options: {} };
+// const config: SocketIoConfig = { url: 'http://localhost:4300', options: {} };
 
 @NgModule({
   declarations: [
@@ -27,10 +27,11 @@ const config: SocketIoConfig = { url: 'http://localhost:4300', options: {} };
     FormsModule,
     AppRoutingModule,
     CommonModule,
-    HttpClientModule,
-    SocketIoModule.forRoot(config)
+    HttpClientModule
+    // SocketIoModule.forRoot(config)
   ],
-  providers: [ChatService,
+  providers: [
+    // ChatService,
     WebconnectionService],
   bootstrap: [AppComponent]
 })

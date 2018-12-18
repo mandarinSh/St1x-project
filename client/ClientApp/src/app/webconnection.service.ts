@@ -1,16 +1,38 @@
 import { Injectable } from '@angular/core';
 import * as Rx from 'rxjs';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
-
-// const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebconnectionService {
-  constructor () {}
 
+  private dbURL = 'http://192.168.43.204:4000/api/users';
+
+  constructor (private http: HttpClient) {}
+
+  getUsers(): any {
+    return this.http.get(this.dbURL, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      console.error('An error occured:', error.error.message);
+    } else {
+      console.error(
+        `Returned code ${error.status}, ` +
+        `body: ${error.error}`);
+    }
+    alert('Something went wrong!');
+    return Rx.throwError('Something went wrong.');
+  }
 
 }
 

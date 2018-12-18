@@ -1,17 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Dialog } from '../dialog';
 import { Message } from '../message';
-import { ChatService } from '../chat.service';
+// import { ChatService } from '../chat.service';
 import { WebconnectionService } from '../webconnection.service';
 import { User } from '../user';
 import { Subscription, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-dialogpage',
   templateUrl: './dialogpage.component.html',
   styleUrls: ['./dialogpage.component.css'],
-  providers: [ WebconnectionService, ChatService ]
+  providers: [
+    // WebconnectionService
+    // ChatService
+  ]
 })
 export class DialogpageComponent implements OnInit, OnDestroy {
 
@@ -25,7 +29,8 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   newMsg: Message = new Message('Hello there');
 
-  constructor(private chatService: ChatService) {
+  constructor( private router: Router,
+    private webconService: WebconnectionService) {
     // chatService.messages.subscribe(msg => {
     //   console.log('Response from web: ' + msg);
     // });
@@ -33,16 +38,22 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.getDialogs();
-    this.messages = this.chatService.messages;
+    // this.messages = this.chatService.messages;
     // this._mesgSub = this.chatService.gotMessage.subscribe(msg => this.receivedMessage = msg);
   }
 
+  getUsers() {
+    this.webconService.getUsers()
+      .subscribe(data => console.log(data));
+  }
+
   getMessage() {
-    this.chatService.getMessage();
+    // this.chatService.getMessage();
   }
 
   sendMessage(msg: string) {
-    this.chatService.sendMessage(msg);
+    // this.chatService.sendMessage(msg);
+    this.getUsers();
   }
 
   getDialogs() {
