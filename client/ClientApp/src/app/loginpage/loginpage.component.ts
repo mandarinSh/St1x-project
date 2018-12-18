@@ -8,10 +8,23 @@ import { Component, OnInit } from '@angular/core';
 export class LoginpageComponent implements OnInit {
 
   errorMsg = 'Error';
+  email = '';
+  password = '';
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onLogIn(email: string, password: string) {
+    this.email = email;
+    this.password = password;
+    // TODO: login and password validation
+    // this.router.navigate(['/dialogs']);
+  }
+
+  onSignIn() {
+    // this.router.navigate(['/registerpage']);
   }
 
 }
