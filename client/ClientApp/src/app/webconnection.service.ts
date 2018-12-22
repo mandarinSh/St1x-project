@@ -13,12 +13,43 @@ const httpOptions = {
 })
 export class WebconnectionService {
 
-  private dbURL = 'http://192.168.43.204:4000/api/users';
+  private dbUsersURL = 'http://192.168.43.204:4000/api/users';
+  private dbUserURL = 'http://192.168.43.204:4000/api/users/:id';
+  private dbSignInPostURL = 'http://192.168.43.204:4000/api/sign_in';
+  private dbSignUpPostURL = 'http://192.168.43.204:4000/api/sign_up';
+  private dbDialogsURL = 'http://192.168.43.204:4000/api/dialogs';
+  private dbMessagesURL = 'http://192.168.43.204:4000/api/messages';
 
   constructor (private http: HttpClient) {}
 
   getUsers(): any {
-    return this.http.get(this.dbURL, httpOptions)
+    return this.http.get(this.dbUsersURL, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  getUser(): any {
+    return this.http.get(this.dbUserURL, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  getDialogs(): any {
+    return this.http.get(this.dbDialogsURL, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  getMessages(): any {
+    return this.http.get(this.dbMessagesURL, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+// POST
+
+  register(regObj: any): any {
+    return this.http.post(this.dbSignUpPostURL, regObj, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  signIn(signInObj): any {
+    return this.http.post(this.dbSignInPostURL, signInObj, httpOptions)
       .pipe(catchError(this.handleError));
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { WebconnectionService } from '../webconnection.service';
 
 @Component({
   selector: 'app-registerpage',
@@ -9,27 +10,31 @@ import { Router } from '@angular/router';
 export class RegisterpageComponent implements OnInit {
 
   errorMsg = 'Error';
+  userId: number;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private webconService: WebconnectionService) { }
 
   ngOnInit() {
   }
 
-  onSigningUp(userName: string, nickName: string, email: string,
+  onSigningUp(firstName: string, lastName: string, nickName: string, email: string,
     password: string, confPassword: string) {
       if (password === confPassword) {
 
-        let registrationObject = {
-          "name" : userName,
-          "nickName" : nickName,
-          "email" : email,
-          "password" : password
+        const registrationObject = {
+          'firstName' : firstName,
+          'lastName' : lastName,
+          'nickName' : nickName,
+          'email' : email,
+          'password' : password
         };
 
       // TODO post request
-      // this.webconService.post(registrationObject)
-        // .subscribe(this.registrationObject.push(registrationObject));
-
+      this.userId = this.webconService.register(registrationObject)
+        .subscribe(data => {
+          console.log(data);
+          this.userId = data.id; });
 
          this.router.navigate(['/dialogpage']);
       } else {
