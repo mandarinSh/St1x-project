@@ -1,0 +1,99 @@
+<div class="dialogpage">
+
+  <div class="row common">
+
+    <div class="column left">
+
+      <!-- navigation bar -->
+      <div class="row upleft">
+        <div class="column left-left-column">
+          <button class="menuButton">
+            Strix
+          </button>
+        </div>
+        <div class="column left-right-column">
+          <button class="findButton">
+            &#8981;
+          </button>
+        </div>
+      </div>
+
+    <div class="row hr">
+      <hr/>
+    </div>  
+    
+      <!-- list of dialogs -->
+
+      <div class="row">
+      <div class="dialogs-list">
+        <ul class="dialogsList" style="list-style-type: none">
+          <li *ngFor="let dialog of dialogs">
+            <div class="column picture">☺</div>
+            <div class="column userName-column">
+              <div class="row">
+                <span class="userName">{{ dialog.userName }}</span>
+              </div>
+              <div class="row">
+                <span class="pseudoText">&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      </div>
+
+      <!-- end list of dialogs -->
+
+    </div>
+
+    <div class="column right">
+
+      <!-- navigation bar -->
+      <div class="row upright">
+          <div class="column right-left-column">
+            <button class="backButton" (ngModel)="currentInterlocutor">
+              ❮{{ currentInterlocutor.name }}
+            </button>
+          </div>
+          <div class="column right-right-column">
+            <button class="propertiesButton">
+              ⁝
+            </button>
+          </div>
+      </div>
+
+      <div class="row hr">
+        <hr/>
+      </div> 
+
+      <!-- current dialog -->
+
+      <div class="row">
+          <div class="current-dialog">
+            <ul class="msgsList" style="list-style-type: none">
+              <li *ngFor="let message of messages">
+                  <div class="row">
+                    <span class="msg">{{ message.text }}</span>
+                  </div>              
+              </li>
+            </ul>
+            <div class="row inputBox">
+              <div class="column text-column">
+                <!-- <p #typeMsg hidden=true></p> -->
+                <input #newMsg class="textField" type="text" placeholder="Type here..." />
+              </div>
+              <div class="column button-column">
+                <button class="sendButton" (click)="sendMessage(newMsg.textContent)">&#9993;</button>
+              </div>
+            </div>
+          </div>
+      </div>
+
+
+
+      <!-- end curren dialog -->
+
+    </div>
+
+  </div>
+</div>
