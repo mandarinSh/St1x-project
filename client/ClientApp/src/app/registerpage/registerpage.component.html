@@ -4,23 +4,23 @@
     <div class="register">
         <div class="userName">
           <label class="name-label">Name</label>
-          <input #userName type="text" value required="required">
+          <input [(ngModel)]="userName" type="text" value required="required">
         </div>
         <div class="nickName">
           <label class="nickname-label">NickName</label>
-          <input #nickName type="text" value required="required">
+          <input [(ngModel)]="nickName" type="text" value required="required">
         </div>
         <div class="email">
           <label class="email-label">Email</label>
-          <input #email type="text" value required="required">
+          <input [(ngModel)]="email" type="text" value required="required">
         </div>
         <div class="password">
           <label class="password-label">Password</label>
-          <input #password required="required" type="password">
+          <input [(ngModel)]="password" required="required" type="password">
         </div>
         <div class="confPassword">
           <label class="confpassword-label">Confirm Password</label>
-          <input #confPassword required="required" type="password">
+          <input [(ngModel)]="confPassword" required="required" type="password">
         </div>
         <p class="errorMesg" (ngModel)="errorMsg">
           {{ errorMsg }}
@@ -30,8 +30,7 @@
         </p>
         
         <button class="sign-up-button" title="Sign up" 
-          (click)="onSigningUp(userName.textContent, nickName.textContent, 
-          email.textContent, password.textContent, confPassword.textContent)">
+          (click)="onSigningUp()">
           <span class="label">Sign up</span>
           <span class="spinner"></span>
         </button>

@@ -12,34 +12,49 @@ export class RegisterpageComponent implements OnInit {
   errorMsg = 'Error';
   userId: number;
 
+  userName = '';
+  nickName = '';
+  email = '';
+  password = '';
+  confPassword = '';
+
   constructor(private router: Router,
     private webconService: WebconnectionService) { }
 
   ngOnInit() {
   }
 
-  onSigningUp(firstName: string, lastName: string, nickName: string, email: string,
-    password: string, confPassword: string) {
-      if (password === confPassword) {
+  onSigningUp() {
+      if (this.password === this.confPassword) {
 
         const registrationObject = {
-          'firstName' : firstName,
-          'lastName' : lastName,
-          'nickName' : nickName,
-          'email' : email,
-          'password' : password
+          'first_name' : this.userName,
+          // 'lastName' : lastName,
+          'nickname' : this.nickName,
+          'email' : this.email,
+          'password' : this.password
         };
 
       // TODO post request
       this.userId = this.webconService.register(registrationObject)
         .subscribe(data => {
           console.log(data);
-          this.userId = data.id; });
+          this.updateConfiguration(data); });
 
-         this.router.navigate(['/dialogpage']);
       } else {
         alert('Passwords are not the same');
       }
     }
 
+    private updateConfiguration(data: any) {
+      console.log(data);
+      this.userId = data.id;
+      if (this.userId === null) {
+        // alert('Cannot Register!');
+        this.errorMsg = 'Can not register!';
+      } else {
+        this.router.navigate(['/dialogpage']);
+      }
+
+    }
 }
