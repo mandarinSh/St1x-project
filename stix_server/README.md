@@ -26,13 +26,13 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 Users structure seems like: `id`, `email`, `nickname`, `first_name`, `last_name`
   
-  example of returned value:
-    {
-      `id` : "id",
-      `email` : "email@email.com",
-      `first_name` : "first_name",
-      `last_name` : "last_name"
-    }
+  example of returned value:  
+    {  
+      `id` : "id",  
+      `email` : "email@email.com",  
+      `first_name` : "first_name",  
+      `last_name` : "last_name"  
+    }  
 
 ### /api scope:
   * `GET` "/users":
