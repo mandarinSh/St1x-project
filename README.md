@@ -1,5 +1,5 @@
-SERVER RoR + REST +WEBSOCKETS
+SERVER RoR + REST + Elixir
 
-CLIENT: Python Kivi
+CLIENT: Angular 7 
 
-Let's work guys. 
+
