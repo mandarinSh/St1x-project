@@ -134,3 +134,61 @@ div.upright {
     font-size: 200%;
 }
 
+div.row.right-dialog {
+    position: relative;
+    height: 800%;
+
+}
+
+div.current-dialog {
+    height: 100%;
+    /* max-height: 100%; */
+}
+
+ul {
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+div.inputBox {
+    height: 20%;
+    width: 200%;
+    /* top: 400px; */
+    /* bottom: 50px; */
+}
+
+div.row.hr {
+    height: 2px;
+}
+
+div.text-column {
+    width: 45%;
+    height: 10%;
+}
+
+.textField {
+    width: 100%;
+    height: 35px;
+}
+
+.sendButton {
+    width: 40px;
+    height: 41px;
+    background: rgb(235, 235, 235);
+    border: 1px solid rgb(41, 79, 87);;
+    border-radius: 5px;
+}
+
+li {
+    position: relative;
+    width: 90%;
+    margin: 2px 2px;
+    padding: 8px;
+    color: #212121;
+    text-decoration: none;
+    text-align: left;
+    background: rgba(255, 255, 255, 0);
+    border: 1px solid #BDBDBD;
+    border-radius: 10px;
+}

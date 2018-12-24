@@ -68,7 +68,7 @@
 
       <!-- current dialog -->
 
-      <div class="row">
+      <div class="row right-dialog">
           <div class="current-dialog">
             <ul class="msgsList" style="list-style-type: none">
               <li *ngFor="let message of messages">
@@ -77,17 +77,18 @@
                   </div>              
               </li>
             </ul>
+          </div>
+      </div>
             <div class="row inputBox">
               <div class="column text-column">
-                <!-- <p #typeMsg hidden=true></p> -->
                 <input #newMsg class="textField" type="text" placeholder="Type here..." />
               </div>
               <div class="column button-column">
                 <button class="sendButton" (click)="sendMessage(newMsg.textContent)">&#9993;</button>
               </div>
             </div>
-          </div>
-      </div>
+          <!-- </div> -->
+      <!-- </div> -->
 
 
 
