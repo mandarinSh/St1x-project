@@ -23,12 +23,12 @@ defmodule StixServerWeb.UserController do
 
     case results do
       %User{} ->
-        json(conn |> put_status(200), %{loggined: true, user_body: results})
+        json(conn |> put_status(200), %{logged_in: true, user_body: results})
 
       _ ->
         json(
           conn |> put_status(:bad_request),
-          %{loggined: false, errors: ["invalid email or password", "user not exists"]}
+          %{logged_in: false, errors: ["invalid email or password", "user not exists"]}
         )
     end
   end
@@ -38,7 +38,7 @@ defmodule StixServerWeb.UserController do
 
     case StixServer.Repo.insert(changeset) do
       {:ok, msg} ->
-        json(conn |> put_status(:message_sent), msg)
+        json(conn |> put_status(:message_sent), %{inserted: msg})
 
       {:error, _changeset} ->
         json(conn |> put_status(:bad_request), %{errors: ["unable to send message"]})
