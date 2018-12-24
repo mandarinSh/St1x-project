@@ -13,12 +13,13 @@ const httpOptions = {
 })
 export class WebconnectionService {
 
-  private dbUsersURL = 'http://192.168.43.204:4000/api/users';
-  private dbUserURL = 'http://192.168.43.204:4000/api/users/:id';
-  private dbSignInPostURL = 'http://192.168.43.204:4000/api/sign_in';
-  private dbSignUpPostURL = 'http://192.168.43.204:4000/api/sign_up';
-  private dbDialogsURL = 'http://192.168.43.204:4000/api/dialogs';
-  private dbMessagesURL = 'http://192.168.43.204:4000/api/messages';
+  private serverURL = 'http://192.168.1.130:4000/api';
+  private dbUsersURL = 'http://192.168.1.130:4000/api/users';
+  private dbUserURL = this.serverURL + '/users/:id';
+  private dbSignInPostURL = 'http://192.168.1.130:4000/api/sign_in';
+  private dbSignUpPostURL = this.serverURL + '/sign_up';
+  private dbDialogsURL = this.serverURL + '/dialogs';
+  private dbMessagesURL = this.serverURL + '/messages';
 
   constructor (private http: HttpClient) {}
 
