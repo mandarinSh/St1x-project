@@ -44,5 +44,5 @@ Users structure seems like: `id`, `email`, `nickname`, `first_name`, `last_name`
   * `POST` "/sign_up" with parameters of user structure above. Required fields: `email` and `password`.
       reutrns JSON with user which created, also puts response status ':created' if everything alright. Else puts ':bad_request' status.
     
-  * 'POST' "/sign_in" with parameters of user structure above. Requeared only `email` and `password` fields.
+  * `POST` "/sign_in" with parameters of user structure above. Requeared only `email` and `password` fields.
       puts response status 200 and JSON with user if logined
