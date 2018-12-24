@@ -16,6 +16,8 @@ defmodule StixServerWeb.Router do
   scope "/", StixServerWeb do
     pipe_through :browser
 
+    # socket "/socket.io", StixServerWeb.UserSocket, websocket: true, longpoll: false
+
     get "/", PageController, :index
   end
 

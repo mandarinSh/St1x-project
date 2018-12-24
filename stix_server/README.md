@@ -21,19 +21,28 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 ## API
 
-'DOMAIN_NAME' will means your ip-adress or domain name.
+`DOMAIN_NAME` will means your ip-adress or domain name.
 
-Users have next felds: ':id', ':email', ':nickname', ':first_name', ':last_name'
+
+Users structure seems like: `id`, `email`, `nickname`, `first_name`, `last_name`
+  
+  example of returned value:
+    {
+      `id` : "id",
+      `email` : "email@email.com",
+      `first_name` : "first_name",
+      `last_name` : "last_name"
+    }
 
 ### /api scope:
-  * 'GET' "/users":
-    returns all users.
+  * `GET` "/users":
+     returns array of users in JSON format.
 
-  * 'GET' "/users/:id":
-    returns user with id = :id if exists.
+  * `GET` "/users/ID":
+     returns JSON with user which id = ID if exists.
 
-  * 'POST' "/sign_up" with parameters of user above. Required :email and :password.
-    reutrns user which created, also puts response status ':created' if everything alright. Else puts ':bad_request' status.
+  * `POST` "/sign_up" with parameters of user structure above. Required fields: `email` and `password`.
+      reutrns JSON with user which created, also puts response status ':created' if everything alright. Else puts ':bad_request' status.
     
-  * 'POST' "/sign_in" with parameters of user above. Requeared only email and password.
-    puts response status 200 and user if logined
+  * 'POST' "/sign_in" with parameters of user structure above. Requeared only `email` and `password` fields.
+      puts response status 200 and JSON with user if logined
