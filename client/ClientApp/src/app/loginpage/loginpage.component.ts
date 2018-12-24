@@ -22,12 +22,16 @@ export class LoginpageComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSignIn(email: string, password: string) {
-    // this.email = email;
-    // this.password = password;
+  onSignIn() {
+
     this.email = 'user_1@mail.ru';
     this.password = '12345';
     // TODO: login and password validation
+
+    if ((this.email === '') || (this.password === '')) {
+      alert('Invalid Login or Password!');
+      return;
+    }
 
     const signInObject = {
       'email' : this.email,
@@ -37,11 +41,15 @@ export class LoginpageComponent implements OnInit {
     this.webconService.signIn(signInObject)
       .subscribe(data => console.log(data));
     // this.router.navigate(['/dialogs']);
+
+    console.log('email is:  ' + this.email);
   }
 
   onSignUp() {
-    this.router.navigate(['/registerpage']);
-    this.webconService.signIn({'email' : 'user_1@mail.ru', 'password' : '12345'});
+    // this.webconService.signIn({'email' : 'user_1@mail.ru', 'password' : '12345'});
+    // this.router.navigate(['/registerpage']);
+
+    console.log('email is:  ' + this.email);
   }
 
 }
