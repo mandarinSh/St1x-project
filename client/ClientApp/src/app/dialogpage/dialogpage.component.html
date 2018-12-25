@@ -81,10 +81,10 @@
       </div>
             <div class="row inputBox">
               <div class="column text-column">
-                <input #newMsg class="textField" type="text" placeholder="Type here..." />
+                <input [(ngModel)]="newMsg" class="textField" type="text" placeholder="Type here..." />
               </div>
               <div class="column button-column">
-                <button class="sendButton" (click)="sendMessage(newMsg.textContent)">&#9993;</button>
+                <button class="sendButton" (click)="sendMessage()">&#9993;</button>
               </div>
             </div>
           <!-- </div> -->

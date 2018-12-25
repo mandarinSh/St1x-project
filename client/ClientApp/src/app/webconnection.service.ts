@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Rx from 'rxjs';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse, ɵHttpInterceptingHandler, HttpHandler, HttpParams } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
 const httpOptions = {
@@ -15,11 +15,15 @@ export class WebconnectionService {
 
   private serverURL = 'http://192.168.1.130:4000/api';
   private dbUsersURL = 'http://192.168.1.130:4000/api/users';
-  private dbUserURL = this.serverURL + '/users/:id';
+  private dbUserURL = 'http://192.168.1.130:4000/api/users/:id';
   private dbSignInPostURL = 'http://192.168.1.130:4000/api/sign_in';
-  private dbSignUpPostURL = this.serverURL + '/sign_up';
-  private dbDialogsURL = this.serverURL + '/dialogs';
-  private dbMessagesURL = this.serverURL + '/messages';
+  private dbSignUpPostURL = 'http://192.168.1.130:4000/api/sign_up';
+  // private dbDialogsURL = 'http://192.168.1.130:4000/api/dialogs';
+  private dbMessagesURL = 'http://192.168.1.130:4000/api/get_all_messages_of_dialog';
+  private dbMessagePostURL = 'http://192.168.1.130:4000/api/send_message';
+  private dbDialogsURL = 'http://192.168.1.130:4000/api/get_latest_message_of_dialogs_of_user';
+
+  public currentUserId: number;
 
   constructor (private http: HttpClient) {}
 
@@ -37,8 +41,12 @@ export class WebconnectionService {
       .pipe(catchError(this.handleError));
   }
 
-  getMessages(): any {
-    return this.http.get(this.dbMessagesURL, httpOptions)
+  getMessages(mesgObg: any): any {
+    const params = new HttpParams()
+      .set('Content-Type', 'application/json')
+      .set('sender_id', mesgObg.sender_id)
+      .set('subject_id', mesgObg.subject_id);
+    return this.http.get(this.dbMessagesURL, {params})
       .pipe(catchError(this.handleError));
   }
 
@@ -53,6 +61,14 @@ export class WebconnectionService {
     return this.http.post(this.dbSignInPostURL, signInObj, httpOptions)
       .pipe(catchError(this.handleError));
   }
+
+  sendMessage(msgObj: any) {
+    return this.http.post(this.dbMessagePostURL, msgObj, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+
+  // Handle errors
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

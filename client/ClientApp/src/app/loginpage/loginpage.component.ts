@@ -15,6 +15,7 @@ export class LoginpageComponent implements OnInit {
   errorMsg = 'Error';
   email = '';
   password = '';
+  currentUserId: number;
 
   constructor(private router: Router,
     private webconService: WebconnectionService) { }
@@ -39,7 +40,7 @@ export class LoginpageComponent implements OnInit {
     };
 
     this.webconService.signIn(signInObject)
-      .subscribe(data => console.log(data));
+      .subscribe(data => this.updateConfiguration(data));
     // this.router.navigate(['/dialogs']);
 
     console.log('email is:  ' + this.email);
@@ -50,6 +51,12 @@ export class LoginpageComponent implements OnInit {
     // this.router.navigate(['/registerpage']);
 
     console.log('email is:  ' + this.email);
+  }
+
+  private updateConfiguration(data: any) {
+    this.currentUserId = data.id;
+    this.webconService.currentUserId = data.id;
+    console.log(data);
   }
 
 }

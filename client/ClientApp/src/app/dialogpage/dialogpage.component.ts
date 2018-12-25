@@ -17,22 +17,26 @@ import { map } from 'rxjs/operators';
 })
 export class DialogpageComponent implements OnInit, OnDestroy {
 
-  currentInterlocutor: User = new User('Alex');
+  currentSubject: User = new User('Alex');
+  currentUserId: number;
+
   dialogs: Dialog[] = [];
   isInDialog = false;
 
-  messages: Observable<Message[]>;
+  // messages: Observable<Message[]>;
+  messages: Message[] = [];
   receivedMessage: Message;
   private _mesgSub: Subscription;
 
-  newMsg: Message = new Message('Hello there');
+  // newMsg: Message = new Message('Hello there');
+  newMsg = '';
 
   constructor( private router: Router,
     private webconService: WebconnectionService) {}
 
   ngOnInit() {
-    // this.getDialogs();
-
+    this.getDialogs();
+    this.currentUserId = this.webconService.currentUserId;
   }
 
   getUsers() {
@@ -40,22 +44,36 @@ export class DialogpageComponent implements OnInit, OnDestroy {
       .subscribe(data => console.log(data));
   }
 
-  getMessage() {
-
+  getMessages() {
+    this.webconService.getMessages({
+      sender_id : this.currentUserId,
+      subject_id : this.currentSubject.id
+    })
+      .subscribe(data => this.updateConfiguration(data));
   }
 
-  sendMessage(msg: string) {
-
-    this.getUsers();
+  sendMessage() {
+    this.messages.push(new Message(this.newMsg));
+    this.webconService.sendMessage(
+      {'sender_id' : this.currentUserId,
+        'subjectId' : this.currentSubject.id,
+        'message_body' : this.newMsg,
+        'inserted_at' : ''
+      });
+    // this.getUsers();
   }
 
   getDialogs() {
     // this.dialogs.push(new Dialog('Ann', 0));
-    // this.messages.push(new Message('hey'));
-    this.newMsg.id = 4;
-    this.newMsg.senderId = 3;
-    this.newMsg.subjectId = 2;
+    this.messages.push(new Message('hey'));
+    // this.newMsg.id = 4;
+    // this.newMsg.senderId = 3;
+    // this.newMsg.subjectId = 2;
 
+  }
+
+  private updateConfiguration(data: any) {
+    this.senderId 
   }
 
   ngOnDestroy() {
