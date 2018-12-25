@@ -21,7 +21,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   // currentSubject: User = new User('Alex');
   currentUser: User = null;
-  currentUserId: number;
+  currentUserId: number = null;
   currentSubjectId: number = null;
   currentSubjectName = '';
   emailUserToFind = '';
@@ -40,8 +40,8 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUserId = this.webconService.currentUserId;
-    console.log(this.currentUserId);
-    if (this.currentUserId === undefined) {
+    // console.log(this.currentUserId);
+    if (this.currentUserId === null) {
       this.router.navigate(['/loginpage']);
       alert('Error! you are not logged in.');
     }
@@ -52,6 +52,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     dialogTmp.sender_id = 1;
     dialogTmp.subject_id = this.currentUserId;
     this.dialogs.push(dialogTmp);
+    console.log(this.webconService.currentUserId);
     // this.getDialogs();
   }
 
@@ -77,6 +78,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
         'message_body' : this.newMsg,
         'inserted_at' : ''
       });
+      console.log(this.webconService.currentUserId);
     // this.getUsers();
   }
 

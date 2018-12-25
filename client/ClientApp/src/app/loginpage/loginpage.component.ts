@@ -15,7 +15,7 @@ export class LoginpageComponent implements OnInit {
   errorMsg = 'Error';
   email = '';
   password = '';
-  currentUserId: number;
+  currentUserId: number = null;
 
   constructor(private router: Router,
     private webconService: WebconnectionService) { }
@@ -40,7 +40,10 @@ export class LoginpageComponent implements OnInit {
     };
 
     this.webconService.signIn(signInObject)
-      .subscribe(data => this.updateConfiguration(data));
+      .subscribe(
+        data => { this.updateConfiguration(data); },
+        error => this.errorMsg = String(error)
+        );
 
     // console.log(this.webconService.currentUserId);
     // this.router.navigate(['/dialogs']);
@@ -55,9 +58,10 @@ export class LoginpageComponent implements OnInit {
   private updateConfiguration(data: any) {
     this.currentUserId = data.user_body.id;
     this.webconService.currentUserId = data.user_body.id;
-    console.log('id is: ' + data.user_body.id);
-    console.log(this.webconService.currentUserId);
-    if (this.currentUserId === undefined) {
+    console.log('id data is: ' + data.user_body.id);
+    console.log('id this is: ' + this.currentUserId);
+    console.log('id service is: ' + this.webconService.currentUserId);
+    if (this.currentUserId === null) {
       console.log('Cannot log in');
     } else {
       this.router.navigate(['/dialogs']);
