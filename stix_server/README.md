@@ -78,3 +78,6 @@ Message structure seems like: `id`, `sender_id`, `subject_id`, `message_body`, `
         Require:  
             `sender_id`, `subject_id`  
         returns `JSON` with array of `MESSAGE` elements, sorted by date
+
+  * `GET` "/get_user_by_email/EMAIL", where `EMAIL` is email of user which need to find  
+        returns `JSON` with user, which `user.email` == `EMAIL`

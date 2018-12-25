@@ -32,6 +32,10 @@ defmodule StixServerWeb.Router do
     post "/sign_in", UserController, :sign_in
 
     post "/send_message", UserController, :send_message
+
+    get "/get_latest_message_of_dialogs_of_user/:id", UserController, :get_latest_message_of_dialogs_of_user
+    get "/get_all_messages_of_dialog", UserController, :get_all_messages_of_dialog
+    get "/get_user_by_email/:email", UserController, :get_user_by_email
   end
 
   # Other scopes may use custom stacks.

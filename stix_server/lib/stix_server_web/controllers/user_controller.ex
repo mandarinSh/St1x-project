@@ -50,7 +50,59 @@ defmodule StixServerWeb.UserController do
 
     case user do
       nil -> json(conn |> put_status(404), %{errors: ["user not found"]})
-      _ -> json(conn, user)
+      _ -> json(conn |> put_status(200), user)
+    end
+  end
+
+  def get_latest_message_of_dialogs_of_user(conn, %{"id" => id}) do
+    import Ecto.Query, only: [from: 2]
+
+    alias StixServer.Schemas.Message
+    alias StixServer.Schemas.User
+
+    subquery = from m in Message,
+      where: m.sender_id == ^id,
+      select: m#,
+      # group_by: m.sender_id
+
+    last_messages = StixServer.Repo.all(subquery)
+
+    case last_messages do
+      nil -> json(conn |> put_status(404), %{errors: ["no messages in current dialog"]})
+      _ -> json(conn |> put_status(200), last_messages)
+    end
+  end
+
+  def get_all_messages_of_dialog(conn, %{"sender_id" => sender_id, "subject_id" => subject_id}) do
+    import Ecto.Query, only: [from: 2]
+
+    alias StixServer.Schemas.Message
+
+    query = from m in Message, where: (m.sender_id == ^sender_id and m.subject_id == ^subject_id) or (m.sender_id == ^subject_id and m.subject_id == ^sender_id),
+      select: m#,
+      # order_
+
+    messages = StixServer.Repo.all(query)
+
+    case messages do
+      nil -> json(conn |> put_status(404), %{errors: ["no messages in current dialog"]})
+      _ -> json(conn |> put_status(200), messages)
+    end
+  end
+
+  def get_user_by_email(conn, %{"email" => email}) do
+    import Ecto.Query, only: [from: 2]
+
+    alias StixServer.Schemas.User
+
+    user = (from u in User,
+      where: (u.email == ^email),
+      select: u)
+      |> StixServer.Repo.all()
+
+    case user do
+      nil -> json(conn |> put_status(404), %{errors: ["user not found"]})
+      _ -> json(conn |> put_status(200), user)
     end
   end
 end
