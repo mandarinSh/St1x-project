@@ -41,6 +41,8 @@ export class LoginpageComponent implements OnInit {
 
     this.webconService.signIn(signInObject)
       .subscribe(data => this.updateConfiguration(data));
+
+    // console.log(this.webconService.currentUserId);
     // this.router.navigate(['/dialogs']);
 
     console.log('email is:  ' + this.email);
@@ -48,15 +50,21 @@ export class LoginpageComponent implements OnInit {
 
   onSignUp() {
     // this.webconService.signIn({'email' : 'user_1@mail.ru', 'password' : '12345'});
-    // this.router.navigate(['/registerpage']);
+    this.router.navigate(['/registerpage']);
 
     console.log('email is:  ' + this.email);
   }
 
   private updateConfiguration(data: any) {
-    this.currentUserId = data.id;
-    this.webconService.currentUserId = data.id;
+    this.currentUserId = data.user_body.id;
+    this.webconService.currentUserId = data.user_body.id;
     console.log(data);
+    console.log(this.webconService.currentUserId);
+    if (this.currentUserId === undefined) {
+      return;
+    } else {
+      this.router.navigate(['/dialogs']);
+    }
   }
 
 }

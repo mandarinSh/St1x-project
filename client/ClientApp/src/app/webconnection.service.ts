@@ -13,15 +13,15 @@ const httpOptions = {
 })
 export class WebconnectionService {
 
-  private serverURL = 'http://192.168.1.130:4000/api';
-  private dbUsersURL = 'http://192.168.1.130:4000/api/users';
-  private dbUserURL = 'http://192.168.1.130:4000/api/users/:id';
-  private dbSignInPostURL = 'http://192.168.1.130:4000/api/sign_in';
-  private dbSignUpPostURL = 'http://192.168.1.130:4000/api/sign_up';
-  // private dbDialogsURL = 'http://192.168.1.130:4000/api/dialogs';
-  private dbMessagesURL = 'http://192.168.1.130:4000/api/get_all_messages_of_dialog';
-  private dbMessagePostURL = 'http://192.168.1.130:4000/api/send_message';
-  private dbDialogsURL = 'http://192.168.1.130:4000/api/get_latest_message_of_dialogs_of_user';
+  private serverURL = 'http://192.168.43.204:4000/api';
+  private dbUsersURL = 'http://192.168.43.204:4000/api/users';
+  private dbUserURL = 'http://192.168.43.204:4000/api/users/:id';
+  private dbSignInPostURL = 'http://192.168.43.204:4000/api/sign_in';
+  private dbSignUpPostURL = 'http://192.168.43.204:4000/api/sign_up';
+  private dbMessagesURL = 'http://192.168.43.204:4000/api/get_all_messages_of_dialog';
+  private dbMessagePostURL = 'http://192.168.43.204:4000/api/send_message';
+  private dbDialogsURL = 'http://192.168.43.204:4000/api/get_latest_message_of_dialogs_of_user';
+  private dbFindUserURL = 'http://192.168.43.204:4000/api/get_user_by_email';
 
   public currentUserId: number;
 
@@ -36,8 +36,12 @@ export class WebconnectionService {
     return this.http.get(this.dbUserURL, httpOptions)
       .pipe(catchError(this.handleError));
   }
-  getDialogs(): any {
-    return this.http.get(this.dbDialogsURL, httpOptions)
+
+  getDialogs(id: string): any {
+    const params = new HttpParams()
+      .set('Content-Type', 'application/json')
+      .set('id', id);
+    return this.http.get(this.dbDialogsURL, {params})
       .pipe(catchError(this.handleError));
   }
 
@@ -47,6 +51,15 @@ export class WebconnectionService {
       .set('sender_id', mesgObg.sender_id)
       .set('subject_id', mesgObg.subject_id);
     return this.http.get(this.dbMessagesURL, {params})
+      .pipe(catchError(this.handleError));
+  }
+
+  findUser(email: string): any {
+    const params = new HttpParams()
+    .set('Content-Type', 'application/json')
+    .set('email', email);
+
+    return this.http.get(this.dbFindUserURL, {params})
       .pipe(catchError(this.handleError));
   }
 

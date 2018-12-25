@@ -11,8 +11,11 @@
             Strix
           </button>
         </div>
+        <div class="column left-middle-column">
+            <input [(ngModel)]="emailUserToFind" class="findField" type="text" placeholder="Type email..." />
+          </div>
         <div class="column left-right-column">
-          <button class="findButton">
+          <button class="findButton" (click)="findUser()">
             &#8981;
           </button>
         </div>
@@ -31,7 +34,7 @@
             <div class="column picture">☺</div>
             <div class="column userName-column">
               <div class="row">
-                <span class="userName">{{ dialog.userName }}</span>
+                <span class="userName">{{ dialog.name }}</span>
               </div>
               <div class="row">
                 <span class="pseudoText">&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;</span>
@@ -51,8 +54,8 @@
       <!-- navigation bar -->
       <div class="row upright">
           <div class="column right-left-column">
-            <button class="backButton" (ngModel)="currentSubject">
-              ❮{{ currentSubject.name }}
+            <button class="backButton" (ngModel)="currentSubjectName" (click)="closeDialog()">
+              ❮{{ currentSubjectName }}
             </button>
           </div>
           <div class="column right-right-column">

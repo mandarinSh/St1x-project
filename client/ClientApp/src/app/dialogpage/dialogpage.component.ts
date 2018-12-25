@@ -18,26 +18,34 @@ import { interval } from 'rxjs';
 })
 export class DialogpageComponent implements OnInit, OnDestroy {
 
-  currentSubject: User = new User('Alex');
+  // currentSubject: User = new User('Alex');
+  currentUser: User = null;
   currentUserId: number;
+  currentSubjectId: number = null;
+  currentSubjectName = '';
+  emailUserToFind = '';
 
   dialogs: Dialog[] = [];
-  isInDialog = false;
-
-  // messages: Observable<Message[]>;
   messages: Message[] = [];
+  newMsg = '';
+
   receivedMessage: Message;
   private _mesgSub: Subscription;
+  isInDialog = false;
 
-  // newMsg: Message = new Message('Hello there');
-  newMsg = '';
 
   constructor( private router: Router,
     private webconService: WebconnectionService) {}
 
   ngOnInit() {
+    // this.currentUser
+     // this.currentUserId = this.webconService.currentUserId;
+    this.currentUserId = 1;
+
+    if (this.currentUserId === undefined) {
+      this.router.navigate(['/loginpage']);
+    }
     this.getDialogs();
-    this.currentUserId = this.webconService.currentUserId;
   }
 
   getUsers() {
@@ -49,16 +57,16 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     this.isInDialog = true;
     this.webconService.getMessages({
       sender_id : this.currentUserId,
-      subject_id : this.currentSubject.id
+      subject_id : this.currentSubjectId
     }).takeWhile(this.isInDialog)
-      .subscribe(data => this.updateConfiguration(data));
+      .subscribe(data => this.updateMesgConfiguration(data));
   }
 
   sendMessage() {
     this.messages.push(new Message(this.newMsg));
     this.webconService.sendMessage(
       {'sender_id' : this.currentUserId,
-        'subjectId' : this.currentSubject.id,
+        'subjectId' : this.currentSubjectId,
         'message_body' : this.newMsg,
         'inserted_at' : ''
       });
@@ -67,13 +75,14 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   getDialogs() {
     // this.dialogs.push(new Dialog('Ann', 0));
-    // this.messages.push(new Message('hey'));
-    this.webconService.getDialogs()
-      .subscribe(data => console.log(data));
 
+    // this.webconService.getDialogs(String(this.currentUserId))
+    //   .subscribe(data => console.log(data));
+    // this.webconService.findUser('user_1@mail.ru')
+    //   .subscribe(data => console.log(data.user_id));
   }
 
-  private updateConfiguration(data: any) {
+  private updateMesgConfiguration(data: any) {
     // TODO: add this values to messages array
 
     data.forEach(element => {
@@ -87,6 +96,24 @@ export class DialogpageComponent implements OnInit, OnDestroy {
       this.messages.push(message);
     });
 
+  }
+
+  findUser() {
+    this.webconService.findUser(this.emailUserToFind)
+      .subscribe(data => this.updateDialogConfiguration(data));
+  }
+
+  updateDialogConfiguration(data: any) {
+    console.log(data.user_id);
+    this.currentSubjectId = data.user_id;
+    this.currentSubjectName = this.webconService.findUser(data.user_id).subscribe();
+  }
+
+  closeDialog() {
+    this.isInDialog = false;
+    this.messages = [];
+    this.currentSubjectId = null;
+    this.currentSubjectName = '';
   }
 
   ngOnDestroy() {

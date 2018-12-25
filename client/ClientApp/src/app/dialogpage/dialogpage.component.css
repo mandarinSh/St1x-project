@@ -50,8 +50,13 @@ div.upright {
 /* left navbar */
 .left-left-column {
     position: relative;
-    width: 90%;
+    width: 30%;
     /* margin-right: 100%; */
+}
+
+.left-middle-column {
+    position: relative;
+    width: 50%;
 }
 
 .left-right-column {
@@ -92,10 +97,17 @@ div.upright {
     margin-top: 2%;
 }
 
+.findField {
+    width: 100%;
+    margin-right: 0%;
+    margin-top: 5%;
+}
+
 .findButton {
     position: relative;
     float: right;
-    margin-right: 30%;
+    /* margin-right: 30%; */
+    margin-left: 0%;
     width: 10%;
     height: 70%;
     color: rgb(41, 79, 87);
