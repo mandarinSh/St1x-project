@@ -25,7 +25,9 @@ export class WebconnectionService {
 
   public currentUserId: number;
 
-  constructor (private http: HttpClient) {}
+  constructor (private http: HttpClient) {
+    console.log('initializing service');
+  }
 
   getUsers(): any {
     return this.http.get(this.dbUsersURL, httpOptions)

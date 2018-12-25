@@ -13,9 +13,6 @@ import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
   selector: 'app-dialogpage',
   templateUrl: './dialogpage.component.html',
   styleUrls: ['./dialogpage.component.css'],
-  providers: [
-    WebconnectionService
-  ]
 })
 export class DialogpageComponent implements OnInit, OnDestroy {
 
@@ -36,23 +33,37 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
 
   constructor( private router: Router,
-    private webconService: WebconnectionService) {}
+    private webconService: WebconnectionService) {
+      this.currentUserId = webconService.currentUserId;
+      if (this.currentUserId === null) {
+        this.router.navigate(['/loginpage']);
+        alert('Error! you are not logged in.');
+      }
+      const dialogTmp: Dialog = new Dialog;
+      dialogTmp.email = 'user_1@mail.ru';
+      dialogTmp.message_body = 'hello mandarin';
+      dialogTmp.name = 'user-1';
+      dialogTmp.sender_id = 1;
+      dialogTmp.subject_id = this.currentUserId;
+      this.dialogs.push(dialogTmp);
+      console.log(this.webconService.currentUserId);
+    }
 
   ngOnInit() {
     this.currentUserId = this.webconService.currentUserId;
     // console.log(this.currentUserId);
-    if (this.currentUserId === null) {
-      this.router.navigate(['/loginpage']);
-      alert('Error! you are not logged in.');
-    }
-    const dialogTmp: Dialog = new Dialog;
-    dialogTmp.email = 'user_1@mail.ru';
-    dialogTmp.message_body = 'hello mandarin';
-    dialogTmp.name = 'user-1';
-    dialogTmp.sender_id = 1;
-    dialogTmp.subject_id = this.currentUserId;
-    this.dialogs.push(dialogTmp);
-    console.log(this.webconService.currentUserId);
+    // if (this.currentUserId === null) {
+    //   this.router.navigate(['/loginpage']);
+    //   alert('Error! you are not logged in.');
+    // }
+    // const dialogTmp: Dialog = new Dialog;
+    // dialogTmp.email = 'user_1@mail.ru';
+    // dialogTmp.message_body = 'hello mandarin';
+    // dialogTmp.name = 'user-1';
+    // dialogTmp.sender_id = 1;
+    // dialogTmp.subject_id = this.currentUserId;
+    // this.dialogs.push(dialogTmp);
+    // console.log(this.webconService.currentUserId);
     // this.getDialogs();
   }
 
@@ -78,7 +89,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
         'message_body' : this.newMsg,
         'inserted_at' : ''
       });
-      console.log(this.webconService.currentUserId);
+      // console.log(this.currentUserId);
     // this.getUsers();
   }
 

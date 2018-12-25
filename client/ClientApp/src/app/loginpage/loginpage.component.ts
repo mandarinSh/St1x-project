@@ -6,9 +6,6 @@ import { WebconnectionService } from '../webconnection.service';
   selector: 'app-loginpage',
   templateUrl: './loginpage.component.html',
   styleUrls: ['./loginpage.component.css'],
-  providers: [
-    WebconnectionService
-  ]
 })
 export class LoginpageComponent implements OnInit {
 
