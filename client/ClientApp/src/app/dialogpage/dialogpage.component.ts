@@ -5,7 +5,8 @@ import { WebconnectionService } from '../webconnection.service';
 import { User } from '../user';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, takeWhile } from 'rxjs/operators';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-dialogpage',
@@ -45,10 +46,11 @@ export class DialogpageComponent implements OnInit, OnDestroy {
   }
 
   getMessages() {
+    this.isInDialog = true;
     this.webconService.getMessages({
       sender_id : this.currentUserId,
       subject_id : this.currentSubject.id
-    })
+    }).takeWhile(this.isInDialog)
       .subscribe(data => this.updateConfiguration(data));
   }
 
@@ -65,19 +67,32 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   getDialogs() {
     // this.dialogs.push(new Dialog('Ann', 0));
-    this.messages.push(new Message('hey'));
-    // this.newMsg.id = 4;
-    // this.newMsg.senderId = 3;
-    // this.newMsg.subjectId = 2;
+    // this.messages.push(new Message('hey'));
+    this.webconService.getDialogs()
+      .subscribe(data => console.log(data));
 
   }
 
   private updateConfiguration(data: any) {
-    this.senderId 
+    // TODO: add this values to messages array
+
+    data.forEach(element => {
+      const senderId = element.sender_id;
+      const subjectId = element.subject_id;
+      const messageBody = element.message_body;
+
+      const message: Message = new Message(messageBody);
+      message.senderId = senderId;
+      message.subjectId = subjectId;
+      this.messages.push(message);
+    });
+
   }
 
   ngOnDestroy() {
     this._mesgSub.unsubscribe();
+    this.messages = [];
+    this.dialogs = [];
   }
 
 }
