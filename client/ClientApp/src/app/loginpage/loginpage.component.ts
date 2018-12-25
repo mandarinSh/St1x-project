@@ -25,8 +25,8 @@ export class LoginpageComponent implements OnInit {
 
   onSignIn() {
 
-    this.email = 'user_1@mail.ru';
-    this.password = '12345';
+    // this.email = 'user_1@mail.ru';
+    // this.password = '12345';
     // TODO: login and password validation
 
     if ((this.email === '') || (this.password === '')) {
@@ -49,19 +49,16 @@ export class LoginpageComponent implements OnInit {
   }
 
   onSignUp() {
-    // this.webconService.signIn({'email' : 'user_1@mail.ru', 'password' : '12345'});
     this.router.navigate(['/registerpage']);
-
-    console.log('email is:  ' + this.email);
   }
 
   private updateConfiguration(data: any) {
     this.currentUserId = data.user_body.id;
     this.webconService.currentUserId = data.user_body.id;
-    console.log(data);
+    console.log('id is: ' + data.user_body.id);
     console.log(this.webconService.currentUserId);
     if (this.currentUserId === undefined) {
-      return;
+      console.log('Cannot log in');
     } else {
       this.router.navigate(['/dialogs']);
     }

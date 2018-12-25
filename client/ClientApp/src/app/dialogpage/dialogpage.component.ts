@@ -7,6 +7,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { map, takeWhile } from 'rxjs/operators';
 import { interval } from 'rxjs';
+import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
 
 @Component({
   selector: 'app-dialogpage',
@@ -38,14 +39,20 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     private webconService: WebconnectionService) {}
 
   ngOnInit() {
-    // this.currentUser
-     // this.currentUserId = this.webconService.currentUserId;
-    this.currentUserId = 1;
-
+    this.currentUserId = this.webconService.currentUserId;
+    console.log(this.currentUserId);
     if (this.currentUserId === undefined) {
       this.router.navigate(['/loginpage']);
+      alert('Error! you are not logged in.');
     }
-    this.getDialogs();
+    const dialogTmp: Dialog = new Dialog;
+    dialogTmp.email = 'user_1@mail.ru';
+    dialogTmp.message_body = 'hello mandarin';
+    dialogTmp.name = 'user-1';
+    dialogTmp.sender_id = 1;
+    dialogTmp.subject_id = this.currentUserId;
+    this.dialogs.push(dialogTmp);
+    // this.getDialogs();
   }
 
   getUsers() {
@@ -117,7 +124,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._mesgSub.unsubscribe();
+    // this._mesgSub.unsubscribe();
     this.messages = [];
     this.dialogs = [];
   }
