@@ -45,7 +45,7 @@ export class LoginpageComponent implements OnInit {
     // console.log(this.webconService.currentUserId);
     // this.router.navigate(['/dialogs']);
 
-    console.log('email is:  ' + this.email);
+    console.log('sign in');
   }
 
   onSignUp() {

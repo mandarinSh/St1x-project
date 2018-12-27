@@ -1,6 +1,6 @@
 export class Dialog {
 
-    // id: number;
+    id: number;
     // userName: string;
     // userId: number;
 

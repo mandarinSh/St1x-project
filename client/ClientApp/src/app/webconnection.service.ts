@@ -13,19 +13,21 @@ const httpOptions = {
 })
 export class WebconnectionService {
 
-  private serverURL = 'http://192.168.43.204:4000/api';
-  private dbUsersURL = 'http://192.168.43.204:4000/api/users';
-  private dbUserURL = 'http://192.168.43.204:4000/api/users/:id';
-  private dbSignInPostURL = 'http://192.168.43.204:4000/api/sign_in';
-  private dbSignUpPostURL = 'http://192.168.43.204:4000/api/sign_up';
-  private dbMessagesURL = 'http://192.168.43.204:4000/api/get_all_messages_of_dialog';
-  private dbMessagePostURL = 'http://192.168.43.204:4000/api/send_message';
-  private dbDialogsURL = 'http://192.168.43.204:4000/api/get_latest_message_of_dialogs_of_user';
-  private dbFindUserURL = 'http://192.168.43.204:4000/api/get_user_by_email';
+  // private serverURL = 'http://192.168.43.204:4000/api';
+  // private serverURL = 'http://192.168.1.130:4000/api';
+  private serverURL = 'http://2f3c370b.ngrok.io/api';
+  private dbUsersURL = this.serverURL + '/users';
+  private dbUserURL = this.serverURL + '/users/id';
+  private dbSignInPostURL = this.serverURL + '/sign_in';
+  private dbSignUpPostURL = this.serverURL + '/sign_up';
+  private dbMessagesURL = this.serverURL + '/get_all_messages_of_dialog';
+  private dbMessagePostURL = this.serverURL + '/send_message';
+  private dbDialogsURL = this.serverURL + '/get_latest_message_of_dialogs_of_user';
+  private dbFindUserURL = this.serverURL + '/get_user_by_email';
 
   public currentUserId: number;
 
-  constructor (private http: HttpClient) {
+  constructor(private http: HttpClient) {
     console.log('initializing service');
   }
 
@@ -43,7 +45,7 @@ export class WebconnectionService {
     const params = new HttpParams()
       .set('Content-Type', 'application/json')
       .set('id', id);
-    return this.http.get(this.dbDialogsURL, {params})
+    return this.http.get(this.dbDialogsURL, { params })
       .pipe(catchError(this.handleError));
   }
 
@@ -52,20 +54,20 @@ export class WebconnectionService {
       .set('Content-Type', 'application/json')
       .set('sender_id', mesgObg.sender_id)
       .set('subject_id', mesgObg.subject_id);
-    return this.http.get(this.dbMessagesURL, {params})
+    return this.http.get(this.dbMessagesURL, { params })
       .pipe(catchError(this.handleError));
   }
 
   findUser(email: string): any {
     const params = new HttpParams()
-    .set('Content-Type', 'application/json')
-    .set('email', email);
+      .set('Content-Type', 'application/json')
+      .set('email', email);
 
-    return this.http.get(this.dbFindUserURL, {params})
+    return this.http.get(this.dbFindUserURL, { params })
       .pipe(catchError(this.handleError));
   }
 
-// POST
+  // POST
 
   register(regObj: any): any {
     return this.http.post(this.dbSignUpPostURL, regObj, httpOptions)
@@ -82,7 +84,6 @@ export class WebconnectionService {
       .pipe(catchError(this.handleError));
   }
 
-
   // Handle errors
 
   private handleError(error: HttpErrorResponse) {
@@ -93,7 +94,7 @@ export class WebconnectionService {
         `Returned code ${error.status}, ` +
         `body: ${error.error}`);
     }
-    alert('Something went wrong!');
+    // alert('Something went wrong!');
     return Rx.throwError('Something went wrong.');
   }
 
