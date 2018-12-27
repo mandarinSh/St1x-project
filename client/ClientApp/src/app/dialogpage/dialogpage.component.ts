@@ -35,27 +35,17 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     private webconService: WebconnectionService) {
 
     this.currentUserId = webconService.currentUserId;
-
-    // const dialogTmp: Dialog = new Dialog;
-    // dialogTmp.email = 'user_1@mail.ru';
-    // dialogTmp.message_body = 'hello mandarin';
-    // dialogTmp.name = 'user-1';
-    // dialogTmp.sender_id = 1;
-    // dialogTmp.subject_id = this.currentUserId;
-    // this.dialogs.push(dialogTmp);
     console.log('currentUserId = ' + this.webconService.currentUserId);
   }
 
   ngOnInit() {
-    // this.currentUserId = this.webconService.currentUserId;
-    // this.getMessages();
-    // console.log(this.currentUserId);
     if (this.currentUserId === null) {
       this.router.navigate(['/loginpage']);
       console.log('Error! you are not logged in.');
     }
     this.id = window.setInterval(() => {
       this.getMessages();
+      this.getDialogs();
     }, 5000);
     this.getDialogs();
   }
@@ -138,7 +128,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     this.webconService.findUser(this.emailUserToFind)
       .subscribe(data => this.updateFindConfiguration(data));
     this.isInDialog = true;
-    this.getMessages();
+    // this.getMessages();
   }
 
   updateFindConfiguration(data: any) {
@@ -146,8 +136,6 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     console.log(data);
     this.currentSubjectId = data[0].id;
     this.currentSubjectName = data[0].first_name;
-    // this.webconService.findUser(data[0].id)
-    //   .subscribe(dat => this.currentSubjectName = dat[0].first_name);
   }
 
   closeDialog() {

@@ -32,15 +32,15 @@ export class LoginpageComponent implements OnInit {
     }
 
     const signInObject = {
-      'email' : this.email,
-      'password' : this.password
+      'email': this.email,
+      'password': this.password
     };
 
     this.webconService.signIn(signInObject)
       .subscribe(
         data => { this.updateConfiguration(data); },
         error => this.errorMsg = String(error)
-        );
+      );
 
     // console.log(this.webconService.currentUserId);
     // this.router.navigate(['/dialogs']);
@@ -61,7 +61,7 @@ export class LoginpageComponent implements OnInit {
     if (this.currentUserId === null) {
       console.log('Cannot log in');
     } else {
-      this.router.navigate(['/dialogs']);
+      this.router.navigate(['/dialogpage']);
     }
   }
 

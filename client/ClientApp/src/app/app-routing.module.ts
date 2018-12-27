@@ -8,8 +8,8 @@ const routes: Routes = [
   { path: 'loginpage', component: LoginpageComponent },
   { path: 'registerpage', component: RegisterpageComponent },
   { path: 'dialogpage', component: DialogpageComponent },
-  { path: '**', redirectTo: 'dialogpage' },
-  { path: '', redirectTo: 'dialogpage', pathMatch: 'full' }
+  { path: '**', redirectTo: 'loginpage' },
+  { path: '', redirectTo: 'loginpage', pathMatch: 'full' }
 ];
 
 @NgModule({
