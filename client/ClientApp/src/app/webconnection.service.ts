@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Rx from 'rxjs';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse, ɵHttpInterceptingHandler, HttpHandler, HttpParams } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
 const httpOptions = {
@@ -13,15 +13,23 @@ const httpOptions = {
 })
 export class WebconnectionService {
 
-  private serverURL = 'http://192.168.1.130:4000/api';
-  private dbUsersURL = 'http://192.168.1.130:4000/api/users';
-  private dbUserURL = this.serverURL + '/users/:id';
-  private dbSignInPostURL = 'http://192.168.1.130:4000/api/sign_in';
+  // private serverURL = 'http://192.168.43.204:4000/api';
+  private serverURL = 'http://192.168.0.165:4000/api';
+  // private serverURL = 'http://cb32d798.ngrok.io/api';
+  private dbUsersURL = this.serverURL + '/users';
+  private dbUserURL = this.serverURL + '/users/id';
+  private dbSignInPostURL = this.serverURL + '/sign_in';
   private dbSignUpPostURL = this.serverURL + '/sign_up';
-  private dbDialogsURL = this.serverURL + '/dialogs';
-  private dbMessagesURL = this.serverURL + '/messages';
+  private dbMessagesURL = this.serverURL + '/get_all_messages_of_dialog';
+  private dbMessagePostURL = this.serverURL + '/send_message';
+  private dbDialogsURL = this.serverURL + '/get_latest_message_of_dialogs_of_user';
+  private dbFindUserURL = this.serverURL + '/get_user_by_email';
 
-  constructor (private http: HttpClient) {}
+  public currentUserId: number;
+
+  constructor(private http: HttpClient) {
+    console.log('initializing service');
+  }
 
   getUsers(): any {
     return this.http.get(this.dbUsersURL, httpOptions)
@@ -32,17 +40,34 @@ export class WebconnectionService {
     return this.http.get(this.dbUserURL, httpOptions)
       .pipe(catchError(this.handleError));
   }
-  getDialogs(): any {
-    return this.http.get(this.dbDialogsURL, httpOptions)
+
+  getDialogs(id: string): any {
+    const params = new HttpParams()
+      .set('Content-Type', 'application/json')
+      .set('id', id);
+    return this.http.get(this.dbDialogsURL, { params })
       .pipe(catchError(this.handleError));
   }
 
-  getMessages(): any {
-    return this.http.get(this.dbMessagesURL, httpOptions)
+  getMessages(mesgObg: any): any {
+    const params = new HttpParams()
+      .set('Content-Type', 'application/json')
+      .set('sender_id', mesgObg.sender_id)
+      .set('subject_id', mesgObg.subject_id);
+    return this.http.get(this.dbMessagesURL, { params })
       .pipe(catchError(this.handleError));
   }
 
-// POST
+  findUser(email: string): any {
+    const params = new HttpParams()
+      .set('Content-Type', 'application/json')
+      .set('email', email);
+
+    return this.http.get(this.dbFindUserURL, { params })
+      .pipe(catchError(this.handleError));
+  }
+
+  // POST
 
   register(regObj: any): any {
     return this.http.post(this.dbSignUpPostURL, regObj, httpOptions)
@@ -54,6 +79,13 @@ export class WebconnectionService {
       .pipe(catchError(this.handleError));
   }
 
+  sendMessage(msgObj: any) {
+    return this.http.post(this.dbMessagePostURL, msgObj, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  // Handle errors
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occured:', error.error.message);
@@ -62,7 +94,7 @@ export class WebconnectionService {
         `Returned code ${error.status}, ` +
         `body: ${error.error}`);
     }
-    alert('Something went wrong!');
+    // alert('Something went wrong!');
     return Rx.throwError('Something went wrong.');
   }
 

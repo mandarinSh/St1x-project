@@ -11,35 +11,38 @@
             Strix
           </button>
         </div>
+        <div class="column left-middle-column">
+          <input [(ngModel)]="emailUserToFind" class="findField" type="text" placeholder="Type email..." />
+        </div>
         <div class="column left-right-column">
-          <button class="findButton">
+          <button class="findButton" (click)="findUser()">
             &#8981;
           </button>
         </div>
       </div>
 
-    <div class="row hr">
-      <hr/>
-    </div>  
-    
+      <div class="row hr">
+        <hr />
+      </div>
+
       <!-- list of dialogs -->
 
       <div class="row">
-      <div class="dialogs-list">
-        <ul class="dialogsList" style="list-style-type: none">
-          <li *ngFor="let dialog of dialogs">
-            <div class="column picture">☺</div>
-            <div class="column userName-column">
-              <div class="row">
-                <span class="userName">{{ dialog.userName }}</span>
+        <div class="dialogs-list">
+          <ul class="dialogsList" style="list-style-type: none">
+            <li *ngFor="let dialog of dialogs" class="dialogElement" (click)="onDialogClick(dialog.id)">
+              <div class="column picture">☺</div>
+              <div class="column userName-column">
+                <div class="row">
+                  <span class="userName">{{ dialog.name }}</span>
+                </div>
+                <div class="row">
+                  <span class="pseudoText">&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;</span>
+                </div>
               </div>
-              <div class="row">
-                <span class="pseudoText">&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;</span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <!-- end list of dialogs -->
@@ -50,44 +53,44 @@
 
       <!-- navigation bar -->
       <div class="row upright">
-          <div class="column right-left-column">
-            <button class="backButton" (ngModel)="currentInterlocutor">
-              ❮{{ currentInterlocutor.name }}
-            </button>
-          </div>
-          <div class="column right-right-column">
-            <button class="propertiesButton">
-              ⁝
-            </button>
-          </div>
+        <div class="column right-left-column">
+          <button class="backButton" (ngModel)="currentSubjectName" (click)="closeDialog()">
+            ❮{{ currentSubjectName }}
+          </button>
+        </div>
+        <div class="column right-right-column">
+          <button class="propertiesButton">
+            ⁝
+          </button>
+        </div>
       </div>
 
       <div class="row hr">
-        <hr/>
-      </div> 
+        <hr />
+      </div>
 
       <!-- current dialog -->
 
       <div class="row right-dialog">
-          <div class="current-dialog">
-            <ul class="msgsList" style="list-style-type: none">
-              <li *ngFor="let message of messages">
-                  <div class="row">
-                    <span class="msg">{{ message.text }}</span>
-                  </div>              
-              </li>
-            </ul>
-          </div>
+        <div class="current-dialog">
+          <ul class="msgsList" style="list-style-type: none">
+            <li *ngFor="let message of messages">
+              <div class="row">
+                <span class="msg">{{ message.text }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-            <div class="row inputBox">
-              <div class="column text-column">
-                <input #newMsg class="textField" type="text" placeholder="Type here..." />
-              </div>
-              <div class="column button-column">
-                <button class="sendButton" (click)="sendMessage(newMsg.textContent)">&#9993;</button>
-              </div>
-            </div>
-          <!-- </div> -->
+      <div class="row inputBox">
+        <div class="column text-column">
+          <input [(ngModel)]="newMsg" class="textField" type="text" placeholder="Type here..." />
+        </div>
+        <div class="column button-column">
+          <button class="sendButton" (click)="sendMessage()">&#9993;</button>
+        </div>
+      </div>
+      <!-- </div> -->
       <!-- </div> -->
 
 

@@ -14,3 +14,11 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+## Deployment
+
+Run `ng serve --prod --host 0.0.0.0` to run application in production mode.
+
+## NGROK
+
+For hosting this app NGRPK server is using. 
+Type `ngrok http 4200 -host-header="localhost:4200"` to host app to the internet.

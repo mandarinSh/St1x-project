@@ -26,8 +26,6 @@ import { WebconnectionService } from './webconnection.service';
     CommonModule,
     HttpClientModule
   ],
-  providers: [
-    WebconnectionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
