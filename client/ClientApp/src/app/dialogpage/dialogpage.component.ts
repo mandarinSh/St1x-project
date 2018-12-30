@@ -46,7 +46,8 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     this.id = window.setInterval(() => {
       this.getMessages();
       this.getDialogs();
-    }, 5000);
+      console.log('get mesg and dialogs');
+    }, 1000);
     this.getDialogs();
   }
 
@@ -63,7 +64,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
   }
 
   getMessages() {
-    console.log('get messages');
+    // console.log('get messages');
     if (this.isInDialog) {
       this.webconService.getMessages({
         sender_id: this.currentUserId,
@@ -74,6 +75,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
+    console.log('send message');
     this.messages.push(new Message(this.newMsg));
     this.webconService.sendMessage(
       {

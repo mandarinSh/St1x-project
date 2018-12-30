@@ -25,36 +25,38 @@ export class RegisterpageComponent implements OnInit {
   }
 
   onSigningUp() {
-      if (this.password === this.confPassword) {
+    if (this.password === this.confPassword) {
 
-        const registrationObject = {
-          'first_name' : this.userName,
-          // 'lastName' : lastName,
-          'nickname' : this.nickName,
-          'email' : this.email,
-          'password' : this.password
-        };
+      const registrationObject = {
+        'first_name': this.userName,
+        // 'lastName' : lastName,
+        'nickname': this.nickName,
+        'email': this.email,
+        'password': this.password
+      };
 
       // TODO post request
-      this.userId = this.webconService.register(registrationObject)
+      // this.userId =
+      this.webconService.register(registrationObject)
         .subscribe(data => {
           console.log(data);
-          this.updateConfiguration(data); });
+          this.updateConfiguration(data);
+        });
 
-      } else {
-        alert('Passwords are not the same');
-      }
+    } else {
+      alert('Passwords are not the same');
+    }
+  }
+
+  private updateConfiguration(data: any) {
+    console.log(data);
+    this.userId = data[0].id;
+    if (this.userId === null) {
+      // alert('Cannot Register!');
+      this.errorMsg = 'Can not register!';
+    } else {
+      this.router.navigate(['/dialogpage']);
     }
 
-    private updateConfiguration(data: any) {
-      console.log(data);
-      this.userId = data.id;
-      if (this.userId === null) {
-        // alert('Cannot Register!');
-        this.errorMsg = 'Can not register!';
-      } else {
-        this.router.navigate(['/dialogpage']);
-      }
-
-    }
+  }
 }
