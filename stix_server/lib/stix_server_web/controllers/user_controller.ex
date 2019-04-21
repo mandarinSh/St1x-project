@@ -1,52 +1,74 @@
 defmodule StixServerWeb.UserController do
   use StixServerWeb, :controller
 
+  alias StixServer.Schemas.User
+  alias StixServer.Schemas.Dialogue
+  alias StixServer.Schemas.Message
+  alias StixServer.Repo
+
   def sign_up(conn, params) do
-    changeset = StixServer.Schemas.User.changeset(%StixServer.Schemas.User{}, params)
+    changeset = User.changeset(%User{}, params)
 
-    case StixServer.Repo.insert(changeset) do
-      {:ok, user} ->
-        json(conn |> put_status(:created), user)
+    case String.length(params["hashed_password"]) do
+      24 ->
+        case Repo.insert(changeset) do
+          {:ok, user} ->
+            json(conn |> put_status(:created), user)
+    
+          {:error, _changeset} ->
+            json(conn |> put_status(:bad_request), %{errors: ["unable to create user"]})
+        end
 
-      {:error, _changeset} ->
-        json(conn |> put_status(:bad_request), %{errors: ["unable to create user"]})
+      _ -> json(
+          conn |> put_status(:forbidden),
+          %{logged_in: false, errors: ["invalid password hash"]}
+      )
     end
   end
 
-  def sign_in(conn, %{"email" => email, "password" => password}) do
+  def sign_in(conn, %{"nickname" => nickname, "hashed_password" => hashed_password}) do
     import Ecto.Query, only: [from: 2]
 
-    alias StixServer.Schemas.User
+    case String.length(hashed_password) do
+      24 -> 
+        query = from u in User, 
+          where: u.nickname == ^nickname and u.hashed_password == ^hashed_password, 
+          select: u
+        results = Repo.one(query)
+        case results do
+          %User{} ->
+            json(conn |> put_status(200), %{logged_in: true, user_body: results})
+    
+          _ ->
+            json(
+              conn |> put_status(:bad_request),
+              %{logged_in: false, errors: ["invalid email or password", "user not exists"]}
+            )
+        end
 
-    query = from u in User, where: u.email == ^email and u.password == ^password, select: u
-    results = StixServer.Repo.one(query)
-
-    case results do
-      %User{} ->
-        json(conn |> put_status(200), %{logged_in: true, user_body: results})
-
-      _ ->
-        json(
-          conn |> put_status(:bad_request),
-          %{logged_in: false, errors: ["invalid email or password", "user not exists"]}
-        )
+      _ -> json(
+        conn |> put_status(:bad_request),
+        %{logged_in: false, errors: ["invalid password hash"]}
+      )
     end
   end
-
+  
+  # TODO
   def send_message(conn, params) do
     changeset = StixServer.Schemas.Message.changeset(%StixServer.Schemas.Message{}, params)
-
-    case StixServer.Repo.insert(changeset) do
+    
+    case Repo.insert(changeset) do
       {:ok, msg} ->
-        json(conn |> put_status(:message_sent), %{inserted: msg})
+        json(conn |> put_status(200), %{message_sent: ["ok"], msg: msg})
 
       {:error, _changeset} ->
         json(conn |> put_status(:bad_request), %{errors: ["unable to send message"]})
     end
   end
 
+  # TODO
   def get_user(conn, %{"id" => id}) do
-    user = StixServer.Repo.get(StixServer.Schemas.User, id)
+    user = Repo.get(StixServer.Schemas.User, id)
 
     case user do
       nil -> json(conn |> put_status(404), %{errors: ["user not found"]})
@@ -54,18 +76,27 @@ defmodule StixServerWeb.UserController do
     end
   end
 
-  def get_latest_message_of_dialogs_of_user(conn, %{"id" => id}) do
+  # TODO
+  def get_last_messages_of_user(conn, %{"id" => id}) do
     import Ecto.Query, only: [from: 2]
 
-    alias StixServer.Schemas.Message
-    alias StixServer.Schemas.User
-
     subquery = from m in Message,
-      where: m.sender_id == ^id,
-      select: m#,
-      # group_by: m.sender_id
+      select: m,
+      where: ((m.sender_id == ^id) or (m.subject_id == ^id))
 
-    last_messages = StixServer.Repo.all(subquery)
+    # query = from m in Message, where: (m.sender_id == ^sender_id and m.subject_id == ^subject_id) or (m.sender_id == ^subject_id and m.subject_id == ^sender_id),
+    # select: m
+
+    query = from m in Message,
+      inner_join: msg in subquery(subquery),
+      on: msg.id == m.id,
+      distinct: [m.subject_id, m.sender_id],
+      # distinct: m.subject_id,
+      order_by: m.inserted_at,
+      select: m
+
+
+    last_messages = Repo.all(query)
 
     case last_messages do
       nil -> json(conn |> put_status(404), %{errors: ["no messages in current dialog"]})
@@ -73,16 +104,15 @@ defmodule StixServerWeb.UserController do
     end
   end
 
+  # TODO
   def get_all_messages_of_dialog(conn, %{"sender_id" => sender_id, "subject_id" => subject_id}) do
     import Ecto.Query, only: [from: 2]
-
-    alias StixServer.Schemas.Message
 
     query = from m in Message, where: (m.sender_id == ^sender_id and m.subject_id == ^subject_id) or (m.sender_id == ^subject_id and m.subject_id == ^sender_id),
       select: m#,
       # order_
 
-    messages = StixServer.Repo.all(query)
+    messages = Repo.all(query)
 
     case messages do
       nil -> json(conn |> put_status(404), %{errors: ["no messages in current dialog"]})
@@ -90,19 +120,20 @@ defmodule StixServerWeb.UserController do
     end
   end
 
-  def get_user_by_email(conn, %{"email" => email}) do
-    import Ecto.Query, only: [from: 2]
-
-    alias StixServer.Schemas.User
-
-    user = (from u in User,
-      where: (u.email == ^email),
-      select: u)
-      |> StixServer.Repo.all()
+  def get_user_by_nickname(conn, %{"nickname" => nickname}) do
+    user = User.get_user_by_nickname(nickname)
 
     case user do
       nil -> json(conn |> put_status(404), %{errors: ["user not found"]})
       _ -> json(conn |> put_status(200), user)
+    end
+  end
+
+  def create_dialogue(conn, [sender_id, reciever_id]) do
+    Dialogue.create_dialogue(sender_id,reciever_id)
+    |> case do
+      {:ok, dialogue} -> json(conn |> put_status(:ok), %{status: "ok"})
+      {:error, msg} -> json(conn |> put_status(:error), %{status: "error", msg: msg})
     end
   end
 end

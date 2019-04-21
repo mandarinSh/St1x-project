@@ -24,8 +24,8 @@ defmodule StixServerWeb.Router do
   scope "/api", StixServerWeb do
     pipe_through :api
 
-    get "/users", PageController, :index
-    get "/users/:id", UserController, :get_user
+    # get "/users", PageController, :index
+    get "/users", UserController, :get_user
 
     post "/sign_up", UserController, :sign_up
 
@@ -33,9 +33,11 @@ defmodule StixServerWeb.Router do
 
     post "/send_message", UserController, :send_message
 
-    get "/get_latest_message_of_dialogs_of_user/:id", UserController, :get_latest_message_of_dialogs_of_user
+    post "/create_dialogue", UserController, :create_dialogue
+
+    get "/get_latest_message_of_dialogs_of_user", UserController, :get_latest_message_of_dialogs_of_user
     get "/get_all_messages_of_dialog", UserController, :get_all_messages_of_dialog
-    get "/get_user_by_email/:email", UserController, :get_user_by_email
+    get "/get_user_by_email", UserController, :get_user_by_email
   end
 
   # Other scopes may use custom stacks.

@@ -2,18 +2,10 @@ defmodule StixServer.Schemas.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:id, :email, :nickname, :first_name, :last_name]}
+  @derive {Jason.Encoder, only: [:id, :nickname]}
   schema "users" do
-    field :birthday, :date
-    field :email, :string
-    field :first_name, :string
-    field :info, :string
-    field :is_active, :boolean, default: false
-    field :last_name, :string
+    field :hashed_password, :string
     field :nickname, :string
-    field :password, :string
-    field :phone_number, :string
-    field :status, :string
 
     timestamps()
   end
@@ -21,9 +13,19 @@ defmodule StixServer.Schemas.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:nickname, :email, :password, :first_name, :last_name, :birthday, :status, :info, :phone_number, :is_active])
-    |> validate_required([:email, :password])
-    |> unique_constraint(:email)
-    |> unique_constraint(:phone_number)
+    |> cast(attrs, [:nickname, :hashed_password])
+    |> validate_required([:nickname, :hashed_password])
+    |> unique_constraint(:nickname)
+  end
+
+  def get_user_by_nickname(nickname) do
+    import Ecto.Query, only: [from: 2]
+
+    alias StixServer.Schemas.User
+
+    (from u in User,
+      where: (u.nickname == ^nickname),
+      select: u)
+      |> StixServer.Repo.all()
   end
 end
