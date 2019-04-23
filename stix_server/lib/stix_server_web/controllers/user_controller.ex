@@ -6,49 +6,26 @@ defmodule StixServerWeb.UserController do
   alias StixServer.Schemas.Message
   alias StixServer.Repo
 
-  # TODO
   def sign_up(conn, params) do
-    case String.length(params["hashed_password"]) do
-      24 ->
-        case User.create_user(params) do
-          {:ok, user} ->
-            json(conn |> put_status(:created), user)
-    
-          {:error, _changeset} ->
-            json(conn |> put_status(:bad_request), %{errors: ["unable to create user"]})
-        end
+    case User.create_user(params) do
+      {:ok, user} ->
+        json(conn |> put_status(:created), %{ok: user})
 
-      _ -> json(
-          conn |> put_status(:forbidden),
-          %{logged_in: false, errors: ["invalid password hash"]}
-      )
+      {:error, _changeset} ->
+        json(conn |> put_status(:bad_request), %{errors: ["unable to create user"]})
     end
   end
 
-  def sign_in(conn, %{"nickname" => nickname, "hashed_password" => hashed_password}) do
-    import Ecto.Query, only: [from: 2]
+  def sign_in(conn, params) do
+    case User.verify_user(params) do
+      {:ok, user} ->
+        json(conn |> put_status(200), %{ok: user})
 
-    case String.length(hashed_password) do
-      24 -> 
-        query = from u in User, 
-          where: u.nickname == ^nickname and u.hashed_password == ^hashed_password, 
-          select: u
-        results = Repo.one(query)
-        case results do
-          %User{} ->
-            json(conn |> put_status(200), %{logged_in: true, user_body: results})
-    
-          _ ->
-            json(
-              conn |> put_status(:bad_request),
-              %{logged_in: false, errors: ["invalid email or password", "user not exists"]}
-            )
-        end
+      {:error, msg} ->
+        json(conn |> put_status(:bad_request), %{error: msg})
 
-      _ -> json(
-        conn |> put_status(:bad_request),
-        %{logged_in: false, errors: ["invalid password hash"]}
-      )
+      nil -> 
+        json(conn |> put_status(:bad_request), %{error: "invalid_parameters"})
     end
   end
   

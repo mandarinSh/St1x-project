@@ -8,8 +8,9 @@ defmodule StixServer.Schemas.User do
 
   @derive {Jason.Encoder, only: [:id, :nickname]}
   schema "users" do
-    field :hashed_password, :string
+    field :password_hash, :string
     field :nickname, :string
+    field :password, :string, virtual: true
 
     timestamps()
   end
@@ -17,23 +18,52 @@ defmodule StixServer.Schemas.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:nickname, :hashed_password])
-    |> validate_required([:nickname, :hashed_password])
+    |> cast(attrs, [:nickname, :password_hash, :password])
+    |> validate_required([:nickname, :password])
     |> unique_constraint(:nickname)
   end
 
+  def registration_changeset(model, params) do
+    model
+    |> changeset(params)
+    |> cast(params, [:password])
+    |> validate_length(:password, min: 6)
+    |> put_password_hash()
+  end
+
+  defp put_password_hash(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
+        put_change(changeset, :password_hash,   
+                   Bcrypt.hash_pwd_salt(pass))
+  
+      _ ->
+        changeset  
+    end
+  end
+
   def create_user(params) do
-    User.changeset(%User{}, params) |> Repo.insert
+    User.registration_changeset(%User{}, params) |> Repo.insert
   end
 
   def get_user(%{"nickname" => nickname}) do
     (from u in User,
       where: (u.nickname == ^nickname),
       select: u)
-      |> Repo.all()
+      |> Repo.one()
   end
 
   def get_user(%{"id" => id}) do
     Repo.get(User, id)
   end
+
+  def get_user(_), do: nil
+
+  def verify_user(%{"password" => password} = params) do
+    params
+      |> User.get_user()
+      |> Bcrypt.check_pass(password)
+  end
+
+  def verify_user(_), do: nil
 end

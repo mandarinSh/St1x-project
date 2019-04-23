@@ -2,7 +2,6 @@ defmodule StixServer.Schemas.Dialogue do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query, only: [from: 2]
-  import Ecto.Query.API, only: [fragment: 1]
 
   alias StixServer.Schemas.Dialogue
   alias StixServer.Repo
@@ -36,7 +35,7 @@ defmodule StixServer.Schemas.Dialogue do
 
         case Repo.insert(changeset) do
           {:ok, struct} -> {:ok, struct}
-          {:error, changeset} -> {:error, "not valid"}
+          {:error, _changeset} -> {:error, "not valid"}
         end
 
       _ -> {:ok, "dialogue exists"}
