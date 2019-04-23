@@ -1,6 +1,10 @@
 defmodule StixServer.Schemas.User do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query, only: [from: 2]
+
+  alias StixServer.Schemas.User
+  alias StixServer.Repo
 
   @derive {Jason.Encoder, only: [:id, :nickname]}
   schema "users" do
@@ -18,14 +22,18 @@ defmodule StixServer.Schemas.User do
     |> unique_constraint(:nickname)
   end
 
-  def get_user_by_nickname(nickname) do
-    import Ecto.Query, only: [from: 2]
+  def create_user(params) do
+    User.changeset(%User{}, params) |> Repo.insert
+  end
 
-    alias StixServer.Schemas.User
-
+  def get_user(%{"nickname" => nickname}) do
     (from u in User,
       where: (u.nickname == ^nickname),
       select: u)
-      |> StixServer.Repo.all()
+      |> Repo.all()
+  end
+
+  def get_user(%{"id" => id}) do
+    Repo.get(User, id)
   end
 end

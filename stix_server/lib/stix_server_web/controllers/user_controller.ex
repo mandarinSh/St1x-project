@@ -6,12 +6,11 @@ defmodule StixServerWeb.UserController do
   alias StixServer.Schemas.Message
   alias StixServer.Repo
 
+  # TODO
   def sign_up(conn, params) do
-    changeset = User.changeset(%User{}, params)
-
     case String.length(params["hashed_password"]) do
       24 ->
-        case Repo.insert(changeset) do
+        case User.create_user(params) do
           {:ok, user} ->
             json(conn |> put_status(:created), user)
     
@@ -53,11 +52,8 @@ defmodule StixServerWeb.UserController do
     end
   end
   
-  # TODO
   def send_message(conn, params) do
-    changeset = StixServer.Schemas.Message.changeset(%StixServer.Schemas.Message{}, params)
-    
-    case Repo.insert(changeset) do
+    case Message.create_message(params) do
       {:ok, msg} ->
         json(conn |> put_status(200), %{message_sent: ["ok"], msg: msg})
 
@@ -66,9 +62,8 @@ defmodule StixServerWeb.UserController do
     end
   end
 
-  # TODO
-  def get_user(conn, %{"id" => id}) do
-    user = Repo.get(StixServer.Schemas.User, id)
+  def get_user(conn, params) do
+    user = User.get_user(params)
 
     case user do
       nil -> json(conn |> put_status(404), %{errors: ["user not found"]})
@@ -104,15 +99,8 @@ defmodule StixServerWeb.UserController do
     end
   end
 
-  # TODO
-  def get_all_messages_of_dialog(conn, %{"sender_id" => sender_id, "subject_id" => subject_id}) do
-    import Ecto.Query, only: [from: 2]
-
-    query = from m in Message, where: (m.sender_id == ^sender_id and m.subject_id == ^subject_id) or (m.sender_id == ^subject_id and m.subject_id == ^sender_id),
-      select: m#,
-      # order_
-
-    messages = Repo.all(query)
+  def get_messages_of_dialog(conn, %{"dialogue_id" => dialogue_id}) do
+    messages = Message.get_messages(dialogue_id)
 
     case messages do
       nil -> json(conn |> put_status(404), %{errors: ["no messages in current dialog"]})
@@ -120,19 +108,10 @@ defmodule StixServerWeb.UserController do
     end
   end
 
-  def get_user_by_nickname(conn, %{"nickname" => nickname}) do
-    user = User.get_user_by_nickname(nickname)
-
-    case user do
-      nil -> json(conn |> put_status(404), %{errors: ["user not found"]})
-      _ -> json(conn |> put_status(200), user)
-    end
-  end
-
-  def create_dialogue(conn, [sender_id, reciever_id]) do
-    Dialogue.create_dialogue(sender_id,reciever_id)
+  def create_dialogue(conn, %{"sender_id" => sender_id, "receiver_id" => receiver_id}) do
+    Dialogue.create_dialogue(sender_id,receiver_id)
     |> case do
-      {:ok, dialogue} -> json(conn |> put_status(:ok), %{status: "ok"})
+      {:ok, msg} -> json(conn |> put_status(:ok), %{status: msg})
       {:error, msg} -> json(conn |> put_status(:error), %{status: "error", msg: msg})
     end
   end
