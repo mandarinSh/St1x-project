@@ -32,7 +32,7 @@ defmodule StixServerWeb.Router do
 
     post "/create_dialogue", UserController, :create_dialogue
 
-    get "/get_latest_message_of_dialogs_of_user", UserController, :get_latest_message_of_dialogs_of_user
+    get "/get_last_messages", UserController, :get_last_messages
     get "/get_messages_of_dialog", UserController, :get_messages_of_dialog
     get "/get_user", UserController, :get_user
   end
