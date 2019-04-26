@@ -4,7 +4,7 @@ defmodule StixServerWeb.PageController do
   def index(conn, _params) do
     users = StixServer.Repo.all(StixServer.Schemas.User)
 
-    json(conn_with_status(conn, users), users)
+    json(conn_with_status(conn, users), users)#%{ok: true, data: users})
   end
 
   defp conn_with_status(conn, nil) do
