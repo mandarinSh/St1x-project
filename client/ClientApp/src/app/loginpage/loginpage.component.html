@@ -1,0 +1,30 @@
+
+  <div class="loginpage">
+
+
+    <div class="login">
+      <!-- <div class="login-error-msg"> -->
+        <div class="login-email">
+          <label class="login-label">E-mail</label>
+          <input [(ngModel)]="email" type="text" id="login-email-field" value required="required">
+        </div>
+        <div class="password">
+          <label class="password-label">Password</label>
+          <input [(ngModel)]="password" required="required" type="password" id="login-password-field">
+        </div>
+        <p class="errorMesg" (ngModel)="errorMsg">
+          {{ errorMsg }}
+        </p>
+        <button class="log-in-button" title="Sign In" 
+          (click)="onSignIn()">
+          <span class="label">Sign in</span>
+          <span class="spinner"></span>
+        </button>
+        <button class="sign-up-button" title="Sign up"
+          (click)="onSignUp()">
+          <span class="label">Sign up</span>
+          <span class="spinner"></span>
+        </button>
+      <!-- </div> -->
+    </div>
+  </div>
