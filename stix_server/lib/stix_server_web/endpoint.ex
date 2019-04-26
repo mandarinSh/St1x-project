@@ -42,5 +42,7 @@ defmodule StixServerWeb.Endpoint do
     key: "_stix_server_key",
     signing_salt: "DjegrEKk"
 
+  plug CORSPlug, origin: ["*"]
+
   plug StixServerWeb.Router
 end

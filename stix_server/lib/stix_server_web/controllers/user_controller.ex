@@ -1,56 +1,75 @@
 defmodule StixServerWeb.UserController do
   use StixServerWeb, :controller
 
-  def sign_up(conn, params) do
-    changeset = StixServer.Schemas.User.changeset(%StixServer.Schemas.User{}, params)
+  alias StixServer.Accounts
+  alias StixServer.Chat
 
-    case StixServer.Repo.insert(changeset) do
+  def sign_up(conn, params) do
+    case Accounts.create_user(params) do
       {:ok, user} ->
-        json(conn |> put_status(:created), user)
+        json(conn |> put_status(:created), %{ok: user})
 
       {:error, _changeset} ->
         json(conn |> put_status(:bad_request), %{errors: ["unable to create user"]})
     end
   end
 
-  def sign_in(conn, %{"email" => email, "password" => password}) do
-    import Ecto.Query, only: [from: 2]
+  def sign_in(conn, params) do
+    case Accounts.verify_user(params) do
+      {:ok, user} ->
+        json(conn |> put_status(200), %{ok: user})
 
-    alias StixServer.Schemas.User
+      {:error, msg} ->
+        json(conn |> put_status(:bad_request), %{error: msg})
 
-    query = from u in User, where: u.email == ^email and u.password == ^password, select: u
-    results = StixServer.Repo.one(query)
-
-    case results do
-      %User{} ->
-        json(conn |> put_status(200), %{loggined: true, user_body: results})
-
-      _ ->
-        json(
-          conn |> put_status(:bad_request),
-          %{loggined: false, errors: ["invalid email or password", "user not exists"]}
-        )
+      nil -> 
+        json(conn |> put_status(:bad_request), %{error: "invalid_parameters"})
     end
   end
-
+  
   def send_message(conn, params) do
-    changeset = StixServer.Schemas.Message.changeset(%StixServer.Schemas.Message{}, params)
-
-    case StixServer.Repo.insert(changeset) do
+    case Chat.create_message(params) do
       {:ok, msg} ->
-        json(conn |> put_status(:message_sent), msg)
+        json(conn |> put_status(200), %{message_sent: ["ok"], msg: msg})
 
       {:error, _changeset} ->
         json(conn |> put_status(:bad_request), %{errors: ["unable to send message"]})
     end
   end
 
-  def get_user(conn, %{"id" => id}) do
-    user = StixServer.Repo.get(StixServer.Schemas.User, id)
+  def get_user(conn, params) do
+    user = Chat.get_user(params)
 
     case user do
       nil -> json(conn |> put_status(404), %{errors: ["user not found"]})
-      _ -> json(conn, user)
+      _ -> json(conn |> put_status(200), user)
+    end
+  end
+
+  # TODO
+  def get_last_messages(conn, %{"user_id" => user_id}) do
+    last_messages = Chat.get_last_messages(user_id)
+
+    case last_messages  do
+      nil -> json(conn |> put_status(404), %{errors: ["no messages in current dialog"]})
+      _ -> json(conn |> put_status(200), last_messages)
+    end
+  end
+
+  def get_messages_of_dialog(conn, %{"dialogue_id" => dialogue_id}) do
+    messages = Chat.get_messages(dialogue_id)
+
+    case messages do
+      nil -> json(conn |> put_status(404), %{errors: ["no messages in current dialog"]})
+      _ -> json(conn |> put_status(200), messages)
+    end
+  end
+
+  def create_dialogue(conn, %{"sender_id" => sender_id, "receiver_id" => receiver_id}) do
+    Chat.create_dialogue(sender_id,receiver_id)
+    |> case do
+      {:ok, msg} -> json(conn |> put_status(:ok), %{status: msg})
+      {:error, msg} -> json(conn |> put_status(:error), %{status: "error", msg: msg})
     end
   end
 end

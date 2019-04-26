@@ -16,20 +16,25 @@ defmodule StixServerWeb.Router do
   scope "/", StixServerWeb do
     pipe_through :browser
 
+    # socket "/socket.io", StixServerWeb.UserSocket, websocket: true, longpoll: false
+
     get "/", PageController, :index
   end
 
   scope "/api", StixServerWeb do
     pipe_through :api
 
-    get "/users", PageController, :index
-    get "/users/:id", UserController, :get_user
-
     post "/sign_up", UserController, :sign_up
 
     post "/sign_in", UserController, :sign_in
 
     post "/send_message", UserController, :send_message
+
+    post "/create_dialogue", UserController, :create_dialogue
+
+    get "/get_last_messages", UserController, :get_last_messages
+    get "/get_messages_of_dialog", UserController, :get_messages_of_dialog
+    get "/get_user", UserController, :get_user
   end
 
   # Other scopes may use custom stacks.
