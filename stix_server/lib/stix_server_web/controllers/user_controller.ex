@@ -7,7 +7,7 @@ defmodule StixServerWeb.UserController do
   def sign_up(conn, params) do
     case Accounts.create_user(params) do
       {:ok, user} ->
-        json(conn |> put_status(:created), %{ok: user})
+        json(conn |> put_status(:created), %{ok: "signed_up", user: user})
 
       {:error, _changeset} ->
         json(conn |> put_status(:bad_request), %{errors: ["unable to create user"]})
@@ -17,7 +17,7 @@ defmodule StixServerWeb.UserController do
   def sign_in(conn, params) do
     case Accounts.verify_user(params) do
       {:ok, user} ->
-        json(conn |> put_status(200), %{ok: user})
+        json(conn |> put_status(200), %{ok: "signed_in", user: user})
 
       {:error, msg} ->
         json(conn |> put_status(:bad_request), %{error: msg})

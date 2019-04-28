@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { map, takeWhile, findIndex } from 'rxjs/operators';
 import { interval } from 'rxjs';
 import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
+import { element } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-dialogpage',
@@ -18,9 +19,10 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   currentUser: User = null;
   currentUserId: number = null;
-  currentSubjectId: number = null;
-  currentSubjectName = '';
-  emailUserToFind = '';
+  currentReceiverId: number = null;
+  currentDialogueId: number = null;
+  currentReceiverNickname = '';
+  nicknameUserToFind = '';
 
   dialogs: Dialog[] = [];
   messages: Message[] = [];
@@ -47,7 +49,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
       this.getMessages();
       this.getDialogs();
       console.log('get mesg and dialogs');
-    }, 1000);
+    }, 100000);
     this.getDialogs();
   }
 
@@ -58,8 +60,10 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   onDialogClick(clickedId: number) {
     this.isInDialog = true;
-    this.currentSubjectId = this.dialogs.find(({ id }) => id === clickedId).subject_id;
-    console.log('currentSubjectId = ' + this.currentSubjectId);
+    this.currentReceiverId = this.dialogs.find(({ id }) => id === clickedId).reciever_id;
+    this.currentDialogueId = this.dialogs.find(({ id }) => id === clickedId).id;
+    this.currentReceiverNickname = this.dialogs.find(({ id }) => id === clickedId).receiverNickname;
+    console.log('currentReceiverId = ' + this.currentReceiverId);
     this.getMessages();
   }
 
@@ -67,8 +71,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     // console.log('get messages');
     if (this.isInDialog) {
       this.webconService.getMessages({
-        sender_id: this.currentUserId,
-        subject_id: this.currentSubjectId
+        dialogue_id: this.currentDialogueId
       })
         .subscribe(data => this.updateMesgConfiguration(data));
     }
@@ -76,12 +79,13 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     console.log('send message');
-    this.messages.push(new Message(this.newMsg));
+    this.messages.push(new Message(this.newMsg, this.currentUserId, this.currentReceiverId, this.currentDialogueId));
     this.webconService.sendMessage(
       {
         'sender_id': this.currentUserId,
-        'subject_id': this.currentSubjectId,
-        'message_body': this.newMsg
+        'receiver_id': this.currentReceiverId,
+        'message_body': this.newMsg,
+        'dialogue_id' : this.currentDialogueId
       }).subscribe();
 
     this.getDialogs();  // if new dialog with new user - update dialogs list
@@ -91,13 +95,9 @@ export class DialogpageComponent implements OnInit, OnDestroy {
 
     const newMessages: Message[] = [];
     data.forEach(element => {
-      const senderId = element.sender_id;
-      const subjectId = element.subject_id;
-      const messageBody = element.message_body;
-
-      const message: Message = new Message(messageBody);
-      message.senderId = senderId;
-      message.subjectId = subjectId;
+      const { sender_id, receiver_id, message_body, dialogue_id} = element;
+      
+      const message: Message = new Message(message_body, sender_id, receiver_id, dialogue_id);
       newMessages.push(message);
     });
     this.messages = newMessages;
@@ -111,14 +111,13 @@ export class DialogpageComponent implements OnInit, OnDestroy {
   updateDialogConfiguration(data: any) {
     const newDialogs: Dialog[] = [];
     data.forEach(element => {
-      const id = element.id;
-      const subjectId = element.subject_id;
-      const messageBody = element.message_body;
+      const { dialogue_id: id , receiver_id, message_body} = element;
+      console.log(message_body);
 
-      const dialog: Dialog = new Dialog();
-      dialog.id = id;
-      dialog.subject_id = subjectId;
-      dialog.message_body = messageBody;
+      const dialog: Dialog = new Dialog(id, receiver_id, message_body);
+      this.webconService.getUser(String(receiver_id))
+        .subscribe(user => dialog.receiverNickname = user.nickname);
+
       newDialogs.push(dialog);
     });
     this.dialogs = newDialogs;
@@ -127,25 +126,27 @@ export class DialogpageComponent implements OnInit, OnDestroy {
   findUser() {
     console.log('find user');
 
-    this.webconService.findUser(this.emailUserToFind)
-      .subscribe(data => this.updateFindConfiguration(data));
+    this.webconService.findUser(this.nicknameUserToFind)
+      .subscribe(data => this.updateFindConfiguration(data))
+      .subscribe(() => {});
     this.isInDialog = true;
     // this.getMessages();
   }
 
   updateFindConfiguration(data: any) {
-    console.log('user found with id: ' + data[0].id);
+    console.log('user found with id: ' + data.id);
     console.log(data);
-    this.currentSubjectId = data[0].id;
-    this.currentSubjectName = data[0].first_name;
+    this.currentReceiverId = data.id;
+    this.currentReceiverNickname = data.nickname;
   }
 
   closeDialog() {
     console.log('close dialog');
     this.isInDialog = false;
     this.messages = [];
-    this.currentSubjectId = null;
-    this.currentSubjectName = '';
+    this.currentReceiverId = null;
+    this.currentReceiverNickname = '';
+    this.currentDialogueId = null;
   }
 
   ngOnDestroy() {

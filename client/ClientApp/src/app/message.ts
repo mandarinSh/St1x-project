@@ -1,13 +1,17 @@
 export class Message {
 
     id: number;
-    subjectId: number;
-    text = '';
+    receiver_id: number;
+    dialogue_id: number;
+    body = '';
     senderId: number;
 
 
-    constructor(text: string) {
-        this.text = text;
+    constructor(body: string, sender_id: number, receiver_id: number, dialogue_id: number) {
+        this.body = body;
+        this.senderId = sender_id;
+        this.receiver_id = receiver_id;
+        this.dialogue_id = dialogue_id;
     }
 
 }

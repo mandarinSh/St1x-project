@@ -14,16 +14,17 @@ const httpOptions = {
 export class WebconnectionService {
 
   // private serverURL = 'http://192.168.43.204:4000/api';
-  private serverURL = 'http://192.168.0.165:4000/api';
+  // private serverURL = 'http://192.168.0.165:4000/api';
+  private serverURL = 'http://localhost:4000/api';
   // private serverURL = 'http://cb32d798.ngrok.io/api';
-  private dbUsersURL = this.serverURL + '/users';
-  private dbUserURL = this.serverURL + '/users/id';
+  private dbUsersURL = this.serverURL + '/users'; // we need this ?
+  private dbUserURL = this.serverURL + '/get_user';
   private dbSignInPostURL = this.serverURL + '/sign_in';
   private dbSignUpPostURL = this.serverURL + '/sign_up';
-  private dbMessagesURL = this.serverURL + '/get_all_messages_of_dialog';
+  private dbMessagesURL = this.serverURL + '/get_messages_of_dialog';
   private dbMessagePostURL = this.serverURL + '/send_message';
-  private dbDialogsURL = this.serverURL + '/get_latest_message_of_dialogs_of_user';
-  private dbFindUserURL = this.serverURL + '/get_user_by_email';
+  private dbDialogsURL = this.serverURL + '/get_last_messages';
+  private dbFindUserURL = this.serverURL + '/get_user';
 
   public currentUserId: number;
 
@@ -31,37 +32,40 @@ export class WebconnectionService {
     console.log('initializing service');
   }
 
+  // we need this ?
   getUsers(): any {
     return this.http.get(this.dbUsersURL, httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getUser(): any {
-    return this.http.get(this.dbUserURL, httpOptions)
+  getUser(id: any): any {
+    const params = new HttpParams()
+      .set('Content-Type', 'application/json')
+      .set('id', id);
+    return this.http.get(this.dbUserURL, { params })
       .pipe(catchError(this.handleError));
   }
 
   getDialogs(id: string): any {
     const params = new HttpParams()
       .set('Content-Type', 'application/json')
-      .set('id', id);
+      .set('user_id', id);
     return this.http.get(this.dbDialogsURL, { params })
       .pipe(catchError(this.handleError));
   }
 
-  getMessages(mesgObg: any): any {
+  getMessages(dialogue: any): any {
     const params = new HttpParams()
       .set('Content-Type', 'application/json')
-      .set('sender_id', mesgObg.sender_id)
-      .set('subject_id', mesgObg.subject_id);
+      .set('dialogue_id', dialogue.dialogue_id);
     return this.http.get(this.dbMessagesURL, { params })
       .pipe(catchError(this.handleError));
   }
 
-  findUser(email: string): any {
+  findUser(nickname: string): any {
     const params = new HttpParams()
       .set('Content-Type', 'application/json')
-      .set('email', email);
+      .set('nickname', nickname);
 
     return this.http.get(this.dbFindUserURL, { params })
       .pipe(catchError(this.handleError));

@@ -10,7 +10,7 @@ import { WebconnectionService } from '../webconnection.service';
 export class LoginpageComponent implements OnInit {
 
   errorMsg = 'Error';
-  email = '';
+  nickname = '';
   password = '';
   currentUserId: number = null;
 
@@ -26,13 +26,13 @@ export class LoginpageComponent implements OnInit {
     // this.password = '12345';
     // TODO: login and password validation
 
-    if ((this.email === '') || (this.password === '')) {
+    if ((this.nickname === '') || (this.password === '')) {
       alert('Invalid Login or Password!');
       return;
     }
 
     const signInObject = {
-      'email': this.email,
+      'nickname': this.nickname,
       'password': this.password
     };
 
@@ -53,9 +53,9 @@ export class LoginpageComponent implements OnInit {
   }
 
   private updateConfiguration(data: any) {
-    this.currentUserId = data.user_body.id;
-    this.webconService.currentUserId = data.user_body.id;
-    console.log('id data is: ' + data.user_body.id);
+    this.currentUserId = data.user.id;
+    this.webconService.currentUserId = data.user.id;
+    console.log('id data is: ' + data.user.id);
     console.log('id this is: ' + this.currentUserId);
     console.log('id service is: ' + this.webconService.currentUserId);
     if (this.currentUserId === null) {

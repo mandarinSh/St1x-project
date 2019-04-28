@@ -12,7 +12,7 @@
           </button>
         </div>
         <div class="column left-middle-column">
-          <input [(ngModel)]="emailUserToFind" class="findField" type="text" placeholder="Type email..." />
+          <input [(ngModel)]="nicknameUserToFind" class="findField" type="text" placeholder="Type nickname..." />
         </div>
         <div class="column left-right-column">
           <button class="findButton" (click)="findUser()">
@@ -32,12 +32,12 @@
           <ul class="dialogsList" style="list-style-type: none">
             <li *ngFor="let dialog of dialogs" class="dialogElement" (click)="onDialogClick(dialog.id)">
               <div class="column picture">☺</div>
-              <div class="column userName-column">
+              <div class="column nickname-column">
                 <div class="row">
-                  <span class="userName">{{ dialog.name }}</span>
+                  <span class="receiverNickname">{{ dialog.receiverNickname }}</span>
                 </div>
                 <div class="row">
-                  <span class="pseudoText">&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;&#8765;</span>
+                  <span class="pseudoText">{{ dialog.message_body }}</span>
                 </div>
               </div>
             </li>
@@ -54,8 +54,8 @@
       <!-- navigation bar -->
       <div class="row upright">
         <div class="column right-left-column">
-          <button class="backButton" (ngModel)="currentSubjectName" (click)="closeDialog()">
-            ❮{{ currentSubjectName }}
+          <button class="backButton" (ngModel)="currentReceiverNickname" (click)="closeDialog()">
+            ❮{{ currentReceiverNickname }}
           </button>
         </div>
         <div class="column right-right-column">
@@ -76,7 +76,7 @@
           <ul class="msgsList" style="list-style-type: none">
             <li *ngFor="let message of messages">
               <div class="row">
-                <span class="msg">{{ message.text }}</span>
+                <span class="message">{{ message.body }}</span>
               </div>
             </li>
           </ul>
