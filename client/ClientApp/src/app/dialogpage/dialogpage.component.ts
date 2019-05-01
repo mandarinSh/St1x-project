@@ -49,7 +49,7 @@ export class DialogpageComponent implements OnInit, OnDestroy {
       this.getMessages();
       this.getDialogs();
       console.log('get mesg and dialogs');
-    }, 100000);
+    }, 10000);
     this.getDialogs();
   }
 
@@ -127,8 +127,16 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     console.log('find user');
 
     this.webconService.findUser(this.nicknameUserToFind)
-      .subscribe(data => this.updateFindConfiguration(data))
-      .subscribe(() => {});
+      .subscribe(data => {
+        this.updateFindConfiguration(data)
+        this.webconService.createDialogue({
+          'sender_id' : this.currentUserId,
+          'receiver_id' : this.currentReceiverId
+        }).subscribe(data => {
+          this.currentDialogueId = data.dialogue.id;
+          this.getMessages();
+        })
+      });
     this.isInDialog = true;
     // this.getMessages();
   }

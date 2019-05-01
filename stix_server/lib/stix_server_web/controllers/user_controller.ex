@@ -32,8 +32,8 @@ defmodule StixServerWeb.UserController do
       {:ok, msg} ->
         json(conn |> put_status(200), %{message_sent: ["ok"], msg: msg})
 
-      {:error, _changeset} ->
-        json(conn |> put_status(:bad_request), %{errors: ["unable to send message"]})
+      {:error, changeset} ->
+        json(conn |> put_status(:bad_request), %{errors: ["unable to send message"], changeset: changeset})
     end
   end
 
@@ -68,7 +68,7 @@ defmodule StixServerWeb.UserController do
   def create_dialogue(conn, %{"sender_id" => sender_id, "receiver_id" => receiver_id}) do
     Chat.create_dialogue(sender_id,receiver_id)
     |> case do
-      {:ok, msg} -> json(conn |> put_status(:ok), %{status: msg})
+      {:ok, answer} -> json(conn |> put_status(:ok), answer)
       {:error, msg} -> json(conn |> put_status(:error), %{status: "error", msg: msg})
     end
   end

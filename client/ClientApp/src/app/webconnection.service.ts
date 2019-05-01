@@ -15,7 +15,7 @@ export class WebconnectionService {
 
   // private serverURL = 'http://192.168.43.204:4000/api';
   // private serverURL = 'http://192.168.0.165:4000/api';
-  private serverURL = 'http://localhost:4000/api';
+  private serverURL = 'http://192.168.1.130:4000/api';
   // private serverURL = 'http://cb32d798.ngrok.io/api';
   private dbUsersURL = this.serverURL + '/users'; // we need this ?
   private dbUserURL = this.serverURL + '/get_user';
@@ -25,6 +25,7 @@ export class WebconnectionService {
   private dbMessagePostURL = this.serverURL + '/send_message';
   private dbDialogsURL = this.serverURL + '/get_last_messages';
   private dbFindUserURL = this.serverURL + '/get_user';
+  private dbDialoguePostURL = this.serverURL + '/create_dialogue'
 
   public currentUserId: number;
 
@@ -46,7 +47,7 @@ export class WebconnectionService {
       .pipe(catchError(this.handleError));
   }
 
-  getDialogs(id: string): any {
+  getDialogs(id: string) {
     const params = new HttpParams()
       .set('Content-Type', 'application/json')
       .set('user_id', id);
@@ -54,7 +55,7 @@ export class WebconnectionService {
       .pipe(catchError(this.handleError));
   }
 
-  getMessages(dialogue: any): any {
+  getMessages(dialogue: any) {
     const params = new HttpParams()
       .set('Content-Type', 'application/json')
       .set('dialogue_id', dialogue.dialogue_id);
@@ -62,7 +63,7 @@ export class WebconnectionService {
       .pipe(catchError(this.handleError));
   }
 
-  findUser(nickname: string): any {
+  findUser(nickname: string) {
     const params = new HttpParams()
       .set('Content-Type', 'application/json')
       .set('nickname', nickname);
@@ -85,6 +86,11 @@ export class WebconnectionService {
 
   sendMessage(msgObj: any) {
     return this.http.post(this.dbMessagePostURL, msgObj, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  createDialogue(dialogueObj: any): any{
+    return this.http.post(this.dbDialoguePostURL, dialogueObj, httpOptions)
       .pipe(catchError(this.handleError));
   }
 

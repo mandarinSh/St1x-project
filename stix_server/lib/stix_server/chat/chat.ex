@@ -31,11 +31,11 @@ defmodule StixServer.Chat do
         changeset = Dialogue.changeset(%Dialogue{}, %{participators: [sender_id, reciever_id]})
 
         case Repo.insert(changeset) do
-          {:ok, struct} -> {:ok, struct}
+          {:ok, dialogue} -> {:ok, %{message: "dialogue created", dialogue: dialogue}}
           {:error, _changeset} -> {:error, "not valid"}
         end
 
-      _ -> {:ok, "dialogue exists"}
+      dialogue -> {:ok, %{message: "dialogue exists", dialogue: dialogue}}
     end
   end
 

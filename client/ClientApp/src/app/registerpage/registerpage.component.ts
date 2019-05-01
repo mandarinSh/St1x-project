@@ -50,7 +50,7 @@ export class RegisterpageComponent implements OnInit {
       // alert('Cannot Register!');
       this.errorMsg = 'Can not register!';
     } else {
-      this.router.navigate(['/dialogpage']);
+      this.router.navigate(['/loginpage']);
     }
 
   }
