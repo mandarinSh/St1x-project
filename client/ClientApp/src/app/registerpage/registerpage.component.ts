@@ -12,9 +12,7 @@ export class RegisterpageComponent implements OnInit {
   errorMsg = 'Error';
   userId: number;
 
-  userName = '';
   nickName = '';
-  email = '';
   password = '';
   confPassword = '';
 
@@ -28,10 +26,7 @@ export class RegisterpageComponent implements OnInit {
     if (this.password === this.confPassword) {
 
       const registrationObject = {
-        'first_name': this.userName,
-        // 'lastName' : lastName,
         'nickname': this.nickName,
-        'email': this.email,
         'password': this.password
       };
 
@@ -50,12 +45,12 @@ export class RegisterpageComponent implements OnInit {
 
   private updateConfiguration(data: any) {
     console.log(data);
-    this.userId = data[0].id;
+    this.userId = data.user.id;
     if (this.userId === null) {
       // alert('Cannot Register!');
       this.errorMsg = 'Can not register!';
     } else {
-      this.router.navigate(['/dialogpage']);
+      this.router.navigate(['/loginpage']);
     }
 
   }

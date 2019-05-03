@@ -1,17 +1,15 @@
 export class Dialog {
 
     id: number;
-    // userName: string;
-    // userId: number;
 
-    subject_id: number;
+    reciever_id: number;
     sender_id: number;
     message_body: string;
-    email: string;
-    name: string;
+    receiverNickname: string;
 
-    constructor() {
-        // this.userName = userName;
-        // this.id = id;
+    constructor(id: number, reciever_id: number, message_body: string) {
+        this.id = id;
+        this.reciever_id = reciever_id;
+        this.message_body = message_body;
     }
 }
