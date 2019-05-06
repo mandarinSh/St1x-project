@@ -11,9 +11,10 @@
             Strix
           </button>
         </div>
-        <div class="column left-middle-column">
-          <input [(ngModel)]="nicknameUserToFind" class="findField" type="text" placeholder="Type nickname..." />
-        </div>
+        <input class="column left-middle-column">
+            <input #userToFind [(ngModel)]="nicknameUserToFind" class="findField" type="text"
+                   placeholder="Type nickname...">
+
         <div class="column left-right-column">
           <button class="findButton" (click)="findUser()">
             &#8981;
@@ -76,7 +77,7 @@
           <ul class="msgsList" style="list-style-type: none">
             <li *ngFor="let message of messages">
               <div class="row">
-                <span class="message" style="align-content: left">
+                <span class="message">
                   {{ message.body }}</span>
               </div>
             </li>
@@ -85,7 +86,9 @@
       </div>
       <div class="row inputBox">
         <div class="column text-column">
-          <input [(ngModel)]="newMsg" class="textField" type="text" placeholder="Type here..." />
+          <label>
+            <input [(ngModel)]="newMsg" class="textField" type="text" placeholder="Type here..." />
+          </label>
         </div>
         <div class="column button-column">
           <button class="sendButton" (click)="sendMessage()">&#9993;</button>

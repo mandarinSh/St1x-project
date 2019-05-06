@@ -6,7 +6,9 @@
       <!-- <div class="login-error-msg"> -->
         <div class="login-nickname">
           <label class="login-label">Nickname</label>
-          <input [(ngModel)]="nickname" type="text" id="login-nickname-field" value required="required">
+          <label for="login-nickname-field">
+            <input [(ngModel)]="nickname" type="text" id="login-nickname-field" value required="required">
+          </label>
         </div>
         <div class="password">
           <label class="password-label">Password</label>

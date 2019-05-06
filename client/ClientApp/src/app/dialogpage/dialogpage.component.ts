@@ -5,10 +5,10 @@ import { WebconnectionService } from '../webconnection.service';
 import { User } from '../user';
 import { Subscription, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { map, takeWhile, findIndex } from 'rxjs/operators';
-import { interval } from 'rxjs';
-import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
-import { element } from '@angular/core/src/render3';
+// import { map, takeWhile, findIndex } from 'rxjs/operators';
+// import { interval } from 'rxjs';
+// import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
+// import { element } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-dialogpage',
@@ -96,7 +96,6 @@ export class DialogpageComponent implements OnInit, OnDestroy {
     const newMessages: Message[] = [];
     data.forEach(element => {
       const { sender_id, receiver_id, message_body, dialogue_id} = element;
-      
       const message: Message = new Message(message_body, sender_id, receiver_id, dialogue_id);
       newMessages.push(message);
     });
