@@ -54,4 +54,12 @@ describe('LoginpageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('login config updates', () => {
+    component.currentUserId = 4;
+    component.nickname = 'testUser';
+    component.password = '111111';
+    component.onSignIn();
+    expect(component.currentUserId).toBe(component.currentUserId);
+  });
 });

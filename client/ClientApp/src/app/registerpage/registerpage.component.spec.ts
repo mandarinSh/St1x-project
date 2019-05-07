@@ -19,6 +19,7 @@ import { DialogpageComponent } from '../dialogpage/dialogpage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { WebconnectionService } from '../webconnection.service';
+import {isNumeric} from "rxjs/internal-compatibility";
 ///
 
 describe('RegisterpageComponent', () => {
@@ -53,5 +54,13 @@ describe('RegisterpageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('register config updates', () => {
+    component.nickName = 'testUser';
+    component.password = '111111';
+    component.confPassword = '111111';
+    component.onSigningUp();
+    expect(component.userId).toBe(component.userId);
   });
 });

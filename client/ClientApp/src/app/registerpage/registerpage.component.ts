@@ -43,7 +43,7 @@ export class RegisterpageComponent implements OnInit {
     }
   }
 
-  private updateConfiguration(data: any) {
+  protected updateConfiguration(data: any) {
     console.log(data);
     this.userId = data.user.id;
     if (this.userId === null) {

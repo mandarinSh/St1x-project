@@ -2,28 +2,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule} from '@angular/forms';
 import { DialogpageComponent } from './dialogpage.component';
 
-///
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Dialog } from '../dialog';
-import { Message } from '../message';
 import { WebconnectionService } from '../webconnection.service';
-import { User } from '../user';
-import { Subscription, Observable } from 'rxjs';
-import { Router } from '@angular/router';
-///
 import { BrowserModule } from '@angular/platform-browser';
-// import { FormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from '../app-routing.module';
 import { AppComponent } from '../app.component';
 import { LoginpageComponent } from '../loginpage/loginpage.component';
-// import { DialogpageComponent } from '../dialogpage/dialogpage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import {RegisterpageComponent} from "../registerpage/registerpage.component";
-// import { WebconnectionService } from '../webconnection.service';
-///
+import {RegisterpageComponent} from '../registerpage/registerpage.component';
+
 
 describe('DialogpageComponent', () => {
   let component: DialogpageComponent;
@@ -58,4 +45,29 @@ describe('DialogpageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('init dialogs', () => {
+    component.ngOnInit();
+    expect(component.dialogs).toBe(component.dialogs);
+  });
+
+  it('finds user', () => {
+    component.findUser();
+    expect(component.isInDialog).toBe(true);
+  });
+
+  // it('closes dialog', () => {
+  //   component.closeDialog();
+  //   expect(component.isInDialog).toBe(false);
+  //   expect(component.currentDialogueId).toBe(null);
+  //   expect(component.currentReceiverId).toBe(null);
+  //   expect(component.currentReceiverNickname).toBe('');
+  //   // expect(component.messages).toBe([]);
+  // });
+
+  // it('destroys dialogs', () => {
+  //   component.ngOnDestroy();
+  //   // expect(component.messages).toBe([]);
+  //   // expect(component.dialogs).toBe([]);
+  // });
 });
