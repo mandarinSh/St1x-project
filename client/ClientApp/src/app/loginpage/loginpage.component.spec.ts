@@ -18,7 +18,7 @@ import { DialogpageComponent } from '../dialogpage/dialogpage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { WebconnectionService } from '../webconnection.service';
-import {RegisterpageComponent} from "../registerpage/registerpage.component";
+import {RegisterpageComponent} from '../registerpage/registerpage.component';
 ///
 
 describe('LoginpageComponent', () => {

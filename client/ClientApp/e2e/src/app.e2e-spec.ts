@@ -1,14 +1,15 @@
 import { AppPage } from './app.po';
+import {AppComponent} from '../../src/app/app.component';
 
 describe('workspace-project App', () => {
-  let page: AppPage;
+  let page: AppComponent;
 
   beforeEach(() => {
-    page = new AppPage();
+    page = new AppComponent();
   });
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to ClientApp!');
+    expect(page.getTitleText()).toEqual('ClientApp');
   });
 });

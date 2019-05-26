@@ -26,7 +26,7 @@ export class WebconnectionService {
   private dbMessagePostURL = this.serverURL + '/send_message';
   private dbDialogsURL = this.serverURL + '/get_last_messages';
   private dbFindUserURL = this.serverURL + '/get_user';
-  private dbDialoguePostURL = this.serverURL + '/create_dialogue'
+  private dbDialoguePostURL = this.serverURL + '/create_dialogue';
 
   public currentUserId: number;
 
@@ -90,7 +90,7 @@ export class WebconnectionService {
       .pipe(catchError(this.handleError));
   }
 
-  createDialogue(dialogueObj: any): any{
+  createDialogue(dialogueObj: any): any {
     return this.http.post(this.dbDialoguePostURL, dialogueObj, httpOptions)
       .pipe(catchError(this.handleError));
   }

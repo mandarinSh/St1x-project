@@ -16,6 +16,8 @@ import {APP_BASE_HREF, CommonModule} from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { WebconnectionService } from './webconnection.service';
 import {RouterModule, Routes} from '@angular/router';
+import {WebconnectionMockService} from "./webconnection-mock.service";
+import {createComponent} from "@angular/compiler/src/core";
 ///
 
 describe('AppComponent', () => {
@@ -44,22 +46,24 @@ describe('AppComponent', () => {
         LoginpageComponent
       ],
       providers: [
-        { provide: APP_BASE_HREF, useValue: '/' }
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: WebconnectionService, useClass: WebconnectionMockService }
       ]
-    }).compileComponents();
+    })
+      .compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('should create the app', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  });
+  }));
 
-  it(`should have as title 'ClientApp'`, () => {
+  it(`should have as title 'ClientApp'`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('ClientApp');
-  });
+  }));
 
   // it('should render title in a h1 tag', () => {
   //   const fixture = TestBed.createComponent(AppComponent);
