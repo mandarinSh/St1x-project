@@ -10,11 +10,13 @@ exports.config = {
     './src/**/*.e2e-spec.ts'
   ],
   capabilities: {
+    browserName: 'chrome',
     'browserName': 'chrome',
     chromeOptions: {
       args: ['--headless'],
       binary: puppeteer.executablePath(),
-    }
+    },
+    chromeDriver: "../node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver.exe"
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
