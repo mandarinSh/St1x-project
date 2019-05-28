@@ -1,0 +1,25 @@
+module.exports = function() {
+  this.credentials = {
+    nickname: 'test',
+    password: 'test11'
+  };
+
+  this.navigateTo = function() {
+    browser.get('http://localhost:4200/loginpage');
+  };
+
+  this.fillCredentials = function(credentials) {
+    element(by.id('login-nickname-field')).sendKeys(this.credentials.nickname);
+    element(by.id('login-password-field')).sendKeys(this.credentials.password);
+
+  };
+
+  this.clickLogIn = function() {
+    element(by.id('log-in-button')).click();
+  };
+
+  this.clickSignUp = function() {
+    element(by.id('sign-up-button')).click();
+  };
+
+}

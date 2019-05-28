@@ -1,0 +1,14 @@
+module.exports = function() {
+
+  this.navigateTo = function() {
+    return browser.get('http://localhost:4200/dialogpage');
+  };
+
+  this.fillCredentials = function(credentials) {
+    element(by.css('[name="nickname"]')).sendKeys(credentials.username);
+    element(by.css('[name="password"]')).sendKeys(credentials.password);
+    element(by.css('.log-in-button')).click();
+  };
+
+
+}

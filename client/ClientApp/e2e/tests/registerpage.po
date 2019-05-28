@@ -1,0 +1,22 @@
+module.exports = function() {
+
+  this.credentials = {
+    nickname: 'test11',
+    password: 'test11'
+  };
+
+  this.navigateTo = function() {
+    return browser.get('http://localhost:4200/registerpage');
+  };
+
+  this.fillCredentials = function(credentials) {
+    element(by.id('nickname-field')).sendKeys(this.credentials.nickname);
+    element(by.id('password-field')).sendKeys(this.credentials.password);
+    element(by.id('conf-password-field')).sendKeys(this.credentials.password);
+  };
+
+  this.clickSignUp = function() {
+    element(by.id('sign-up-button')).click();
+  };
+
+}

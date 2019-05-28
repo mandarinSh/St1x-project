@@ -4,15 +4,15 @@
     <div class="register">
         <div class="nickName">
           <label class="nickname-label">NickName</label>
-          <input [(ngModel)]="nickName" type="text" value required="required">
+          <input id="nickname-field" [(ngModel)]="nickName" type="text" value required="required">
         </div>
         <div class="password">
           <label class="password-label">Password</label>
-          <input [(ngModel)]="password" required="required" type="password">
+          <input id="password-field" [(ngModel)]="password" required="required" type="password">
         </div>
         <div class="confPassword">
           <label class="confpassword-label">Confirm Password</label>
-          <input [(ngModel)]="confPassword" required="required" type="password">
+          <input id="conf-password-field" [(ngModel)]="confPassword" required="required" type="password">
         </div>
         <p class="errorMesg" (ngModel)="errorMsg">
           {{ errorMsg }}
@@ -21,7 +21,7 @@
           *Required fields
         </p>
         
-        <button class="sign-up-button" title="Sign up" 
+        <button id="sign-up-button" class="sign-up-button" title="Sign up"
           (click)="onSigningUp()">
           <span class="label">Sign up</span>
           <span class="spinner"></span>

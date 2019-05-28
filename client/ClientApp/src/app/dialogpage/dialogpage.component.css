@@ -50,7 +50,7 @@ div.upright {
 /* left navbar */
 .left-left-column {
     position: relative;
-    width: 30%;
+    width: 20%;
     /* margin-right: 100%; */
 }
 
@@ -86,7 +86,7 @@ div.upright {
 .menuButton {
     position: relative;
     float: left;
-    width: 10%;
+    width: 60px;
     height: 70%;
     color: rgb(41, 79, 87);
     text-decoration: none;
@@ -98,7 +98,7 @@ div.upright {
 }
 
 .findField {
-    width: 100%;
+    width: 85%;
     margin-right: 0%;
     margin-top: 5%;
 }
@@ -108,7 +108,7 @@ div.upright {
     float: right;
     /* margin-right: 30%; */
     margin-left: 0%;
-    width: 10%;
+    width: 30px;
     height: 70%;
     color: rgb(41, 79, 87);
     text-decoration: none;

@@ -1,13 +1,8 @@
 import {WebconnectionService} from './webconnection.service';
-import { HttpHeaders, HttpClient, HttpErrorResponse, ɵHttpInterceptingHandler,
-  HttpHandler, HttpParams } from '@angular/common/http';
-import * as Rx from 'rxjs';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import {TeardownLogic} from 'rxjs';
 
 describe('WebconnectionService', () => {
-  // let service: WebconnectionService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,7 +20,7 @@ describe('WebconnectionService', () => {
     }
 
     it('should get user', () => {
-      const {webService, httpTestingController } = setup();
+      const { webService } = setup();
       const someUser = {
         'id': 1,
         'nickname': 'mandarin'
@@ -35,7 +30,7 @@ describe('WebconnectionService', () => {
     });
 
     it('should getDialogs', () => {
-      const {webService, httpTestingController } = setup();
+      const { webService } = setup();
       const someLastMessages = [{
         'id': 3,
         'message_body': 'fine thanks',

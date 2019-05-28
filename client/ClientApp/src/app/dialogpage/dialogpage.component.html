@@ -11,17 +11,16 @@
             Strix
           </button>
         </div>
-        <input class="column left-middle-column">
-            <input #userToFind [(ngModel)]="nicknameUserToFind" class="findField" type="text"
+        <div class="column left-middle-column">
+          <input #userToFind [(ngModel)]="nicknameUserToFind" class="findField" type="text"
                    placeholder="Type nickname...">
-
-        <div class="column left-right-column">
-          <button class="findButton" (click)="findUser()">
-            &#8981;
-          </button>
+          <div class="column left-right-column">
+            <button class="findButton" (click)="findUser()">
+              &#8981;
+            </button>
+          </div>
         </div>
       </div>
-
       <div class="row hr">
         <hr />
       </div>
